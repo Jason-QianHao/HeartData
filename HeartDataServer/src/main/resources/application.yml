@@ -10,5 +10,7 @@ spring:
    datasource:
       url: jdbc:mysql://localhost:3306/heartdata
       username: root
-      password: qianhao123
+      # mac / windows passport
+      password: root
       driver-class-name: com.mysql.jdbc.Driver
+fileBasePath: ./heartFils/

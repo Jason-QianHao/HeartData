@@ -38,8 +38,14 @@ CREATE TABLE `users`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
   `password` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '密码，加密存储',
+  `phone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手机号',
   `openId` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '登录Id',
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '自动插入，创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE
+  UNIQUE INDEX `username`(`username`) USING BTREE,
+  UNIQUE INDEX `phone`(`phone`) USING BTREE,
+  INDEX `openId`(`openId`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '用户表';
+
+DROP TABLE `users`
+SELECT * from `users`;
