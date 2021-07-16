@@ -1,0 +1,24 @@
+package com.qian.Entity;
+
+import java.sql.Timestamp;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class FileEntity {
+	/*
+	 *   
+	  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	  `file_name` varchar(150) NOT NULL COMMENT '文件名称',
+	  `file_url` varchar(100)  NOT NULL COMMENT '文件url',
+	  `pepole_Id` int(11) NOT NULL COMMENT '所属人Id',
+	  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '自动插入，创建时间',
+	 */
+	private int id;
+	private String fileName;
+	private String fileUrl;
+	private int pepoleId;
+	private Timestamp created;
+}
