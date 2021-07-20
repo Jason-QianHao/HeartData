@@ -1,0 +1,26 @@
+<!--index.wxml-->
+<view class="index-css">
+  <!--用户信息-->
+  <view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell">
+      <view class="weui-cell__bd">昵称</view>
+      <view class="weui-cell__ft">{{userInfo.nickName}}</view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-cell__bd">性别</view>
+      <view class="weui-cell__ft" wx:if="{{userInfo.gender == 1}}">男</view>
+      <view class="weui-cell__ft" wx:elif="{{userInfo.gender == 2}}">女</view>
+      <view class="weui-cell__ft" wx:else>未知</view>
+    </view>
+    <view class="weui-cell">
+      <view class="weui-cell__bd">城市</view>
+      <view class="weui-cell__ft">{{userInfo.city}} {{userInfo.province}}</view>
+    </view>
+  </view>
+  <!--心电信号显示-->
+  <canvas class="canvas" canvas-id="heart" binderror="canvasIdErrorCallback">
+
+  </canvas>
+  <!--开始连接按钮-->
+  <a class="weui-btn weui-btn_primary" bindtap="action">开始连接</a>
+</view>
