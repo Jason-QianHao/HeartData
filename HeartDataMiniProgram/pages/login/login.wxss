@@ -9,7 +9,7 @@
 }
 .btn{
   position: absolute;
-  left: 200rpx;
+  left: 220rpx;
   top: 1000rpx;
   background-color: greenyellow;
 }
