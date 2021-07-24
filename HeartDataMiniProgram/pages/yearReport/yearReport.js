@@ -1,19 +1,22 @@
-// pages/report/report.js
+// pages/report-detail/report-detail.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    reports: {}
+    year: '',
+    yearReports: {}
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // console.log(options.year);
+    var y = options.year;
     var that = this;
     // 通过http请求，加载每年前两个月的报告
-
+    
     // 解析JSON对象
     var res = '{ "data" : ['+
                 '{ '+
@@ -50,42 +53,14 @@ Page({
                       ']'+
                     '}'+
                   ']'+
-                '},'+
-                '{ '+
-                  '"year": "2021",'+
-                  '"month": ['+
-                    '{ "m": "2",' +
-                      '"imgurl": "/static/imgs/reports/riqi2.png",'+
-                      '"title": "2月报告",'+
-                      '"description": "2月报告，良好",'+
-                      '"analysis": {'+
-                        '"HealthIndex": "",'+
-                        '"Other": ""'+
-                      '},'+
-                      '"dayLists":['+
-                        '{ "d" : "31",'+
-                          '"isUsed": "",'+
-                          '"HealthIndex" : ""'+
-                          '}'+
-                        ']'+
-                      '}'+
-                    ']'+
-                '}'+               
+                '}'+
               ']}';
     var obj = JSON.parse(res);
     // console.log(obj);
     that.setData({
-      reports: obj
+      yearReports: obj,
+      year: y
     });
-  },
-
-  /**
-   * 年度报告查看全部
-   */
-  yearReport: function (e) {
-    wx.navigateTo({
-      url: '/pages/yearReport/yearReport?year=' + e.currentTarget.id
-    })
   },
 
   /**
