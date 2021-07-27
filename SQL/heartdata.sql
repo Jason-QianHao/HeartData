@@ -49,3 +49,21 @@ CREATE TABLE `users`  (
 
 DROP TABLE `users`
 SELECT * from `users`;
+
+
+CREATE TABLE `wxusers`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+  `open_id` varchar(32) NOT NULL COMMENT '小程序openid',
+  `nick_name` varchar(50) NOT NULL COMMENT '用户名',
+  `avatar_url` varchar(500) NOT NULL COMMENT '密码，加密存储',
+  `gender` int(10) NULL DEFAULT NULL COMMENT '登录Id',
+  `city` varchar(32) NOT NULL COMMENT '城市',
+  `province` varchar(32) NOT NULL COMMENT '省份',
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '自动插入，创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `open_id`(`open_id`) USING BTREE,
+  INDEX `nick_name`(`nick_name`) USING BTREE
+) ENGINE = InnoDB COMMENT = '微信用户表';
+
+DROP TABLE `wxusers`;
+SELECT * from `wxusers`;

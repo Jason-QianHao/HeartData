@@ -11,6 +11,6 @@ spring:
       url: jdbc:mysql://localhost:3306/heartdata
       username: root
       # mac / windows passport
-      password: root
+      password: -----
       driver-class-name: com.mysql.jdbc.Driver
 fileBasePath: ./heartFils/
