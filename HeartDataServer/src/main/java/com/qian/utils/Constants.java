@@ -19,5 +19,5 @@ public interface Constants {
 	 * 小程序相关
 	 */
 	String APPID = "---";
-	String APPSECRET = "----";
+	String APPSECRET = "---";
 }
