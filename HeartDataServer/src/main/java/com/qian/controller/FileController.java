@@ -25,12 +25,13 @@ public class FileController {
 	 */
 	@RequestMapping("/recieveFile")
 	public String recieveFile(@RequestParam(value = "file", required = false) List<MultipartFile> files) {
-		String result = fileService.addFile(files);
-		if(result.equals(Constants.SUCCESSCODE)) {
+		try {
+			fileService.addFile(files);
 			log.info("FileController/recieveFile, 数据传输成功");
 			return "数据传输成功";
-		}else {
-			log.info("FileController/recieveFile, 数据传输失败");
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("FileController/recieveFile, 数据传输失败", e);
 			return "数据传输失败";
 		}
 	}

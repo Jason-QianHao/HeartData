@@ -78,7 +78,174 @@
 
 ## 心电报告
 
-​	待设计...
+​	用来查询用户的心电和健康的年度报告、月报告、日报告等信息。
+
+### 报告主页
+
+​	用来简述用户各年的情况。
+
+#### 页面展示
+
+<img src="/./img/image-20210728123454880.png" alt="image-20210728123454880" style="zoom:50%;" />
+
+#### 介绍
+
+- 报告主页由多个简略版年度报告组成
+- 每个年度报告简略版包含最多两个月的月报告，一个超链接可以查看所有年度报告。
+- 每个简略版月报告包含名称、简介月健康状况。
+
+#### 报告格式
+
+​	报告由服务端生成，并以JSON字符串格式发送到小程序。
+
+```json
+{ "data" : [
+    {
+      "year": "2020",
+      "month": [
+                 { "m": "1",
+                   "imgurl": "/static/imgs/reports/riqi1.png",
+                   "title": "1月报告",
+                   "description": "1月报告，良好",
+                   "analysis": {
+                     "HealthIndex": "",
+                     "Other": ""
+                    },
+                   "dayLists":[
+                                { "d" : "31",
+                                  "isUsed": "",
+                                  "HealthIndex" : ""
+                                }
+                              ]
+                  }
+               ]
+     }             
+   ]
+}
+```
+
+### 详细年度报告
+
+​	详细展示该年所有使用设备的每个月的大概情况。
+
+#### 页面展示
+
+<img src="/./img/image-20210728124527330.png" alt="image-20210728124527330" style="zoom:50%;" />
+
+#### 介绍
+
+	- 包含概念使用设备的，每个月的简略版月报告。
+
+### 详细月报告
+
+​	展示每个月的健康状况，和显示当月每天的大致情况。
+
+#### 页面展示
+
+<img src="/./img/image-20210728124857069.png" alt="image-20210728124857069" style="zoom:50%;" />
+
+#### 介绍
+
+- 包含当月的月健康指数和其他信息。
+- 包含当月每天的是否使用过设备的简略信息。
+
+#### 示例月报告
+
+```json
+{ "data" : [
+             { 
+               "year": "2020",
+               "month": [
+                    			{ "m": "1",
+                      			"imgurl": "/static/imgs/reports/riqi1.png",
+                      			"title": "1月报告",
+                      			"description": "1月报告，良好",
+                      			"analysis": {
+                        									"HealthIndex": "8.0",
+                        									"Other": ""
+                      			},
+                      			"dayLists":[
+                        								{ "d" : "1",'+
+                          								"imgurl": "/static/imgs/reports/riqi1.png",'+
+                          								"isUsed": "true",
+                          								"HealthIndex" : "9.9"
+                        								},
+                        								{ "d" : "2",
+                          								"imgurl": "/static/imgs/reports/riqi2.png",
+                          								"isUsed": "false",
+                          								"HealthIndex" : ""
+                        								},
+                        								{ "d" : "3",
+                          								"imgurl": "/static/imgs/reports/riqi3.png",
+                          								"isUsed": "true",
+                          								"HealthIndex" : "1.5"
+                        								}
+                      			]
+                   				}
+                 ]
+               }
+             	]
+};
+```
+
+### 详细日报告
+
+​	包含每日的大致健康状况，和每次使用设备的记录。
+
+#### 页面展示
+
+<img src="/./img/image-20210728125739532.png" alt="image-20210728125739532" style="zoom:50%;" />
+
+#### 介绍
+
+- 包含当日健康状况描述和每次使用记录
+- 每个使用记录包含名称、使用时间、健康状况。
+
+#### 示例日报告
+
+```json
+{ "data" : [
+            { 
+              "year": "2020",
+               "month": [
+                        	{ "m": "1",
+                      			"imgurl": "/static/imgs/reports/riqi1.png",
+                      			"title": "1月报告",
+                     				"description": "1月报告，良好",
+                      			"analysis": {
+                        									"HealthIndex": "8.0",
+                        									"Other": ""
+                      			},
+                      			"dayLists":[
+                        								{ "d" : "1",
+                          								"imgurl": "/static/imgs/reports/riqi1.png",
+                          								"isUsed": "true",
+                          								"HealthIndex" : "9.9",
+                          								"fileLists":[
+                            														{
+  																												"id": "1",
+                              														"createdTime": "2020-01-01 15:00:00",
+                              														"avgBeat": "75"
+                            														},
+                            														{
+                                                          "id": "2",
+                              														"createdTime": "2020-01-01 16:00:00",
+                              														"avgBeat": "80"
+                            														},
+                            														{
+                                                          "id": "3",
+                              														"createdTime": "2020-01-01 17:00:00",
+                              														"avgBeat": "60"
+                            														}
+                          														]
+                        									}
+                      			]
+                    			}
+                 ]
+             }
+          ]
+};
+```
 
 # 开发笔记
 

@@ -5,9 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @MapperScan(basePackages="com.qian.mapper")
+@EnableTransactionManagement //开启事务
 public class HeartDataApp extends SpringBootServletInitializer{
 	public static void main(String[] args) {
 		SpringApplication.run(HeartDataApp.class, args);

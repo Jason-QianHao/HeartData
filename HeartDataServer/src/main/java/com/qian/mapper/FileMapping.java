@@ -13,7 +13,8 @@ public interface FileMapping {
 	/*
 	 * 插入一个文件
 	 */
-	@Insert("insert into `file_info` (`file_name`, `file_url`, `pepole_id`) values(#{fileName}, #{fileUrl}, #{pepoleId});")
+	@Insert("insert into `file_info` (`file_name`, `file_url`, `pepole_id`, `client_created`) "
+			+ "values(#{fileName}, #{fileUrl}, #{pepoleId}, #{clientCreated});")
 	public void addFile(FileEntity fileEntity);
 	
 	/*
@@ -25,6 +26,6 @@ public interface FileMapping {
 	/*
 	 * 查询一个人某一天的所有文件
 	 */
-	@Select("select * from `file_info` where `pepole_id=#{pepoleId} and `created` like '#{day}%;")
-	public List<FileEntity> getFilesByPepoleIdAndTime(@Param("pepoleId") int pepoleId, @Param("created") String day);
+	@Select("select * from `file_info` where `pepole_id=#{pepoleId} and `client_created` like '#{day}%;")
+	public List<FileEntity> getFilesByPepoleIdAndTime(@Param("pepoleId") int pepoleId, @Param("day") String day);
 }
