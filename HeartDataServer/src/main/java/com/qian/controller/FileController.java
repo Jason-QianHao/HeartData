@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-public class FileController {
+public class FileController extends BaseController{
 
 	@Autowired
 	private FileService fileService;
@@ -34,5 +34,29 @@ public class FileController {
 			log.info("FileController/recieveFile, 数据传输失败", e);
 			return "数据传输失败";
 		}
+	}
+	
+	/*
+	 * 查询用户健康报告首页
+	 */
+	@RequestMapping("/getReport")
+	public String getReport(String openid) {
+		// 查询用户是否存在
+        String isNewWxUser = wxUserService.isNewWxUser(openid);
+        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        	// 是新用户           
+            return "请先登陆";
+        }else if(isNewWxUser.equals(Constants.ERROR)) {
+        	// 查询失败
+        	log.info("FileController/getReport, 用户信息查询失败");
+        	return Constants.ERROR;
+        }
+        String summryReport = fileService.getSummryReport(openid);
+        if(summryReport.equals(Constants.ERROR)) {
+        	log.info("FileController/getReport, 报告获取失败");
+        	return Constants.ERROR;
+        }
+        log.info("FileController/getReport, 报告获取成功");
+        return summryReport;
 	}
 }

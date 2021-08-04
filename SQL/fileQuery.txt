@@ -1,0 +1,24 @@
+# 文件相关表
+CREATE TABLE `file_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+  `file_name` varchar(150) NOT NULL COMMENT '文件名称',
+  `file_url` varchar(100)  NOT NULL COMMENT '文件url',
+	`year` varchar(10) NOT NULL COMMENT '年份',
+	`month` varchar(10) NOT NULL COMMENT '月份',
+	`day` varchar(10) NOT NULL COMMENT '日',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+	`client_created` timestamp(6) NOT NULL COMMENT '客户端创建时间',
+  `server_created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '自动插入，服务器创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `file_name`(`file_name`) USING BTREE,
+  INDEX `pepole_Id`(`pepole_Id`) USING BTREE,
+	INDEX `year` (`year`) USING BTREE,
+	INDEX `month` (`month`) USING BTREE,
+	INDEX `day` (`day`) USING BTREE
+) ENGINE = InnoDB COMMENT = '文件表';
+
+DROP TABLE `file_info`;
+SELECT * from `file_info`;
+insert into `file_info`(`file_name`, `file_url`, `pepole_id`) values('qh_1', '/home', 1);
+TRUNCATE TABLE `file_info`;
+select DISTINCT(`year`) from `file_info` where `pepole_id`=1;

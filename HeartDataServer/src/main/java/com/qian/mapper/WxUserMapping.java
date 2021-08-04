@@ -21,4 +21,10 @@ public interface WxUserMapping {
 	 */
 	@Select("select `open_id` from `wxusers` where `open_id`=#{openId}")
 	public String getOpenId(@Param("openId") String openId);
+	
+	/*
+	 * 根据openId查询id
+	 */
+	@Select("select `id` from `wxusers` where `open_id`=#{openId}")
+	public int getIdByOpenId(String openId);
 }

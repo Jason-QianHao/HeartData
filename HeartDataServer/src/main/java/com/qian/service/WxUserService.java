@@ -54,4 +54,19 @@ public class WxUserService {
 			return Constants.ERROR;
 		}
 	}
+	
+	/*
+	 * 根据用户openId查询id
+	 */
+	public int getId(String openId) {
+		try {
+			int id = wxUserMapping.getIdByOpenId(openId);
+			log.info("WxUserService/getId, 查询ID成功," + id);
+			return id;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("WxUserService/getId, 查询ID失败", e);
+			return -1;
+		}
+	}
 }

@@ -2,11 +2,9 @@ package com.qian.service;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -17,8 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qian.Entity.FileEntity;
+import com.qian.Entity.algorithm.MonthReport;
+import com.qian.algorithm.Report;
 import com.qian.mapper.FileMapping;
+import com.qian.mapper.MonthReportMapping;
 import com.qian.utils.Constants;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +34,14 @@ public class FileService {
 	private String fileBasePath;
 	@Autowired
 	private FileMapping fileMapping;
+	@Autowired
+	private MonthReportMapping monthReportMapping;
+	@Autowired
+	private WxUserService wxUserService;
 
 	/*
-	 * 插入一个文件 文件名，以username命名 这里后面需要加入回滚操作。
+	 * 插入一个文件 文件名，以username命名 
+	 * 支持回滚操作。
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public void addFile(List<MultipartFile> files) throws IOException, ParseException {
@@ -49,9 +57,20 @@ public class FileService {
 			fileMapping.addFile(entityFromFile);
 		}
 	}
+	
+	/*
+	 * 根据当日情况，生成报告，
+	 * 并修改月报告数据。
+	 * 
+	 * 可以设置为定时任务，开启线程进行
+	 */
+	public void generateReport(FileEntity fileEntity) {
+		
+	}
 
 	/*
-	 * 查询某个人所有文件，生成总体报告 
+	 * 1. 查询某个人所有文件，生成总体报告report 
+	 * 2. 包括每年的基本信息，每年前2个月的缩略信息
 	 * 格式JSON 
 	 * { "data" : [ 
 	 * 	{ "year": "2020", 
@@ -78,15 +97,48 @@ public class FileService {
 	 * "2020-01-01 16:00:00", "avgBeat": "80" }, { "id": "3", "createdTime":
 	 * "2020-01-01 17:00:00", "avgBeat": "60" } ] } ] } ] } ] };
 	 */
-	public String getSummryReport(int pepoleId) {
-		List<FileEntity> allFilesByPepoleId = fileMapping.getAllFilesByPepoleId(pepoleId);
-		// 读取文件
-		// 算法分析
-		return "";
+	public String getSummryReport(String openId) {
+		try {
+			// 从redis中，用openId提取pepoleId、
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if(pepoleId == -1) {
+				log.info("FileService/getSummryReport, 用户openid查询失败，获取健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询用户使用年份
+			List<String> allYearsByPepoleId = fileMapping.getAllYearsByPepoleId(pepoleId);
+			// 查询前两个月的信息并封装
+			JSONObject report = new JSONObject();
+			JSONArray yearArray = new JSONArray();
+			for(String year : allYearsByPepoleId) {
+				// 组合简略报告
+				JSONObject smallYearReport = new JSONObject();
+				smallYearReport.put(Constants.YEAR, year);
+				
+				JSONArray monthArray = new JSONArray();
+				List<MonthReport> front2months = monthReportMapping.getFront2months(year, pepoleId);
+				for(MonthReport mR : front2months) {
+					monthArray.add(Report.monthReportJSON(mR));
+				}
+				
+				smallYearReport.put(Constants.MONTH, monthArray);
+				yearArray.add(smallYearReport);
+			}
+			report.put(Constants.DATA, yearArray);
+			log.info("FileService/getSummryReport, 获取健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("FileService/getSummryReport, 获取健康报告失败", e);
+			return Constants.ERROR;
+		}
 	}
 
 	/*
-	 * fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_
+	 * fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
 	 */
 	private FileEntity getEntityFromFile(String fileName) throws ParseException {
 		String[] strs = fileName.split("_");
@@ -95,13 +147,15 @@ public class FileService {
 		String TimeStamp_Time = strs[2] + ":" + strs[3] + ":" + strs[4];
 		// 分割时间戳，建立文件夹
 		String[] arr = TimeStamp_Day.split("-"); // [yy, mm, dd]
-//		isExist(fileBasePath + arr[0]);
-//		isExist(fileBasePath + arr[0] + "/" + arr[1]);
-		isExist(fileBasePath + arr[0] + "/" + arr[1] + "/" + arr[2]);
+		String filePath = fileBasePath + pepoleId + "/" + arr[0] + "/" + arr[1] + "/" + arr[2];
+		isExist(filePath);
 		// 组合文件类
 		FileEntity fileEntity = new FileEntity();
+		fileEntity.setYear(arr[0]);
+		fileEntity.setMonth(arr[1]);
+		fileEntity.setDay(arr[2]);
 		fileEntity.setPepoleId(Integer.valueOf(pepoleId));
-		fileEntity.setFileUrl(fileBasePath + arr[0] + "/" + arr[1] + "/" + arr[2] + "/" + fileName);
+		fileEntity.setFileUrl(filePath + "/" + fileName);
 		fileEntity.setFileName(fileName);
 		fileEntity.setClientCreated(new Timestamp(
 				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(TimeStamp_Day + " " + TimeStamp_Time).getTime()));

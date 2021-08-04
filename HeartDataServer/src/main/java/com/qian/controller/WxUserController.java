@@ -15,10 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-public class WxUserController {
+public class WxUserController extends BaseController{
 
-	@Autowired
-	private WxUserService wxUserService;
 	@Autowired
 	private RestTemplate restTemplate;
 	

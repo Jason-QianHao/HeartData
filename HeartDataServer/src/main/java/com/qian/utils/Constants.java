@@ -20,4 +20,18 @@ public interface Constants {
 	 */
 	String APPID = "---";
 	String APPSECRET = "---";
+	
+	/*
+	 * 报告相关
+	 */
+	String DATA = "data";
+	String YEAR = "year";
+	String MONTH = "month";
+	String M = "m";
+	String IMGURL = "imgurl";
+	String TITLE = "title";
+	String DESCRIPTION = "description";
+	String ANALYSIS = "analysis";
+	String HEALTHINDEX = "HealthIndex";
+	String OTHER = "Other";
 }
