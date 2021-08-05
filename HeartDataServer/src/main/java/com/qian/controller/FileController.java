@@ -45,7 +45,7 @@ public class FileController extends BaseController{
         String isNewWxUser = wxUserService.isNewWxUser(openid);
         if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
         	// 是新用户           
-            return "请先登陆";
+            return Constants.FAILCODE;
         }else if(isNewWxUser.equals(Constants.ERROR)) {
         	// 查询失败
         	log.info("FileController/getReport, 用户信息查询失败");

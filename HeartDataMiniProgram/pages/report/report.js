@@ -1,4 +1,8 @@
 // pages/report/report.js
+
+// 获取应用实例
+const app = getApp();
+
 Page({
 
   /**
@@ -13,9 +17,36 @@ Page({
   onLoad: function (options) {
     var that = this;
     // 通过http请求，加载每年前两个月的报告
-
-    // 解析JSON对象
-    var res = '{ "data" : ['+
+    wx.showToast({ 
+      title: '报告获取中...',
+      icon: 'loading',
+      duration: 3000
+    });
+    wx.request({
+      url: 'http://localhost/getReport',
+      data: {
+        openid: app.globalData.openid
+      },
+      success(res){
+        if(res.data == 'error'){
+          wx.showToast({
+            title: '报告获取失败',
+            icon: 'fail',
+            duration: 2000
+          });
+        }else if(res.data == '500'){
+          wx.showToast({
+            title: '请先登陆',
+            icon: 'fail',
+            duration: 2000
+          });
+          wx.navigateTo({
+            url: '/pages/login/login',
+          });
+        }else {
+          // 解析JSON对象
+          /*
+    var json = '{ "data" : ['+
                 '{ '+
                   '"year": "2020",'+
                   '"month": ['+
@@ -72,10 +103,16 @@ Page({
                     ']'+
                 '}'+               
               ']}';
-    var obj = JSON.parse(res);
-    // console.log(obj);
-    that.setData({
-      reports: obj
+          */
+          // console.log(res.data);
+          // console.log(json);
+          // var obj = JSON.parse(json);
+          // console.log(obj);
+          that.setData({
+            reports: res.data
+          });
+        }
+      }
     });
   },
 

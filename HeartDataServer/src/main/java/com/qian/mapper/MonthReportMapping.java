@@ -18,8 +18,14 @@ public interface MonthReportMapping {
 	public void insertMonthReport(MonthReport monthReport);
 	
 	/*
+	 * 判断月报告是否存在
+	 */
+	@Select("select id from `month_report` WHERE `y`=#{y} and `m`=#{m}")
+	public Integer isExist(@Param("y") int year, @Param("m") int month);
+	
+	/*
 	 * 根据年份查询所有月份前两个月份
 	 */
 	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m limit 2;")
-	public List<MonthReport> getFront2months(@Param("y") String year, @Param("pepoleId") int pepoleId);
+	public List<MonthReport> getFront2months(@Param("y") int year, @Param("pepoleId") int pepoleId);
 }

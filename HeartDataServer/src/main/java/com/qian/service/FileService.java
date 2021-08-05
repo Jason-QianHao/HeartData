@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qian.Entity.FileEntity;
 import com.qian.Entity.algorithm.MonthReport;
 import com.qian.algorithm.Report;
+import com.qian.algorithm.ReportRunable;
 import com.qian.mapper.FileMapping;
 import com.qian.mapper.MonthReportMapping;
 import com.qian.utils.Constants;
@@ -38,6 +40,8 @@ public class FileService {
 	private MonthReportMapping monthReportMapping;
 	@Autowired
 	private WxUserService wxUserService;
+	@Autowired
+	private ThreadPoolExecutor threadPoolExecutor;
 
 	/*
 	 * 插入一个文件 文件名，以username命名 
@@ -55,6 +59,8 @@ public class FileService {
 			out.flush();
 			// 插入数据库
 			fileMapping.addFile(entityFromFile);
+			// 后台生成报告
+			generateReport(entityFromFile);
 		}
 	}
 	
@@ -62,10 +68,11 @@ public class FileService {
 	 * 根据当日情况，生成报告，
 	 * 并修改月报告数据。
 	 * 
-	 * 可以设置为定时任务，开启线程进行
+	 * 可以设置为定时任务每天晚上12点执行，并开启线程进行处理
 	 */
 	public void generateReport(FileEntity fileEntity) {
-		
+		Runnable reportRunable = new ReportRunable(fileEntity, monthReportMapping);
+		threadPoolExecutor.execute(reportRunable);
 	}
 
 	/*
@@ -118,7 +125,7 @@ public class FileService {
 				smallYearReport.put(Constants.YEAR, year);
 				
 				JSONArray monthArray = new JSONArray();
-				List<MonthReport> front2months = monthReportMapping.getFront2months(year, pepoleId);
+				List<MonthReport> front2months = monthReportMapping.getFront2months(Integer.valueOf(year), pepoleId);
 				for(MonthReport mR : front2months) {
 					monthArray.add(Report.monthReportJSON(mR));
 				}

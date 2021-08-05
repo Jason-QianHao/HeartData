@@ -32,7 +32,7 @@ Page({
               //发起网络请求
               // console.log(res);
               wx.request({
-                url: 'http://3a40r96515.zicp.vip/wxLogin',
+                url: 'http://localhost/wxLogin',
                 data: {
                   code: res.code,
                   nickName: app.globalData.userInfo.nickName,
@@ -49,7 +49,7 @@ Page({
                     app.globalData.openid = result.data;
                     // console.log(app.globalData.openid);
                     wx.switchTab({
-                      url: '/pages/index/index?'
+                      url: '/pages/index/index'
                     })
                   }else {
                     wx.showToast({
