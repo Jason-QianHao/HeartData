@@ -15,7 +15,7 @@
 
 ### 页面展示
 
-<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="2" style="zoom:40%" />
+<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="200" style="zoom:40%" />
 
 ### 介绍
 
