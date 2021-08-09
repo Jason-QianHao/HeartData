@@ -15,7 +15,7 @@
 
 ### 页面展示
 
-<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="20%"/>
+<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="500"/>
 
 ### 介绍
 
@@ -27,13 +27,13 @@
 
   目前采用微信方式登陆，点击按钮后，弹出弹窗，授权后可以获取到微信相关的信息：微信昵称、性别、地区。
 
-  <img src="/./img/image-20210723183725257.png" alt="image-20210723183725257" style="zoom:50%;" />
+  <img src="/./img/image-20210723183725257.png" alt="image-20210723183725257" height="500" />
 
 ### 代码框架
 
 - js
 
-  <img src="/./img/image-20210723184021316.png" alt="image-20210723184021316" style="zoom:30%;" />
+  <img src="/./img/image-20210723184021316.png" alt="image-20210723184021316" height="500" />
 
   js部分后续还要加上将登陆信息发送到服务器部分。
 
@@ -43,7 +43,7 @@
 
 - wxml
 
-  <img src="/./img/image-20210723184046722.png" alt="image-20210723184046722" style="zoom:40%;" />
+  <img src="/./img/image-20210723184046722.png" alt="image-20210723184046722" height="500" />
 
 ## 主页
 
@@ -51,7 +51,7 @@
 
 ### 页面展示
 
-<img src="/./img/image-20210723184408143.png" alt="image-20210723184408143" style="zoom:40%;" />
+<img src="/./img/image-20210723184408143.png" alt="image-20210723184408143" height="500" />
 
 ### 介绍
 
@@ -66,7 +66,7 @@
 
 - js
 
-  <img src="/./img/image-20210723203742528.png" alt="image-20210723203742528" style="zoom:40%;" />
+  <img src="/./img/image-20210723203742528.png" alt="image-20210723203742528" height="500" />
 
   userInfo为用户信息；heartdata初始化为1，后面实时显示时，进行数组移动即可，更新最后一个数。
 
@@ -74,7 +74,7 @@
 
 - wxml
 
-  <img src="/./img/image-20210723203924092.png" alt="image-20210723203924092" style="zoom:40%;" />
+  <img src="/./img/image-20210723203924092.png" alt="image-20210723203924092" height="500" />
 
 ## 心电报告
 
@@ -86,7 +86,7 @@
 
 #### 页面展示
 
-<img src="/./img/image-20210728123454880.png" alt="image-20210728123454880" style="zoom:50%;" />
+<img src="/./img/image-20210728123454880.png" alt="image-20210728123454880" height="500" />
 
 #### 介绍
 
@@ -130,7 +130,7 @@
 
 #### 页面展示
 
-<img src="/./img/image-20210728124527330.png" alt="image-20210728124527330" style="zoom:50%;" />
+<img src="/./img/image-20210728124527330.png" alt="image-20210728124527330" height="500" />
 
 #### 介绍
 
@@ -142,7 +142,7 @@
 
 #### 页面展示
 
-<img src="/./img/image-20210728124857069.png" alt="image-20210728124857069" style="zoom:50%;" />
+<img src="/./img/image-20210728124857069.png" alt="image-20210728124857069" height="500" />
 
 #### 介绍
 
@@ -194,7 +194,7 @@
 
 #### 页面展示
 
-<img src="/./img/image-20210728125739532.png" alt="image-20210728125739532" style="zoom:50%;" />
+<img src="/./img/image-20210728125739532.png" alt="image-20210728125739532" height="500" />
 
 #### 介绍
 
