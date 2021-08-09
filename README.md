@@ -7,7 +7,7 @@
 
 ​	小程序主要分为登陆页面、主页、心电报告页面。其中主页和心电报告页面整合为带tabbar的页面。
 
-<img src="/./img/image-20210723183849092.png" alt="image-20210723183849092" style="zoom:30%;" />
+<img src="/./img/image-20210723183849092.png" alt="image-20210723183849092" height="500"/>
 
 ## 登陆页面
 
@@ -15,7 +15,7 @@
 
 ### 页面展示
 
-<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="200" style="zoom:40%" />
+<img src="/./img/image-20210723183205703.png" alt="image-20210723183205703" height="20%"/>
 
 ### 介绍
 
