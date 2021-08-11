@@ -32,7 +32,7 @@ Page({
               //发起网络请求
               // console.log(res);
               wx.request({
-                url: 'http://localhost/wxLogin',
+                url: app.globalData.domain + '/wxLogin',
                 data: {
                   code: res.code,
                   nickName: app.globalData.userInfo.nickName,

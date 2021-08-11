@@ -24,8 +24,14 @@ public interface MonthReportMapping {
 	public Integer isExist(@Param("y") int year, @Param("m") int month);
 	
 	/*
-	 * 根据年份查询所有月份前两个月份
+	 * 根据年份查询所有月份前两个月报告
 	 */
 	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m limit 2;")
 	public List<MonthReport> getFront2months(@Param("y") int year, @Param("pepoleId") int pepoleId);
+	
+	/*
+	 * 根据年份查询所有月份的月报告
+	 */
+	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m;")
+	public List<MonthReport> getAllMonthsByYear(@Param("y") int year, @Param("pepoleId") int pepoleId);
 }

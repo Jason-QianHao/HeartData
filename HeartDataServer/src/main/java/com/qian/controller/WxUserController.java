@@ -25,8 +25,9 @@ public class WxUserController extends BaseController{
 	 */
 	@RequestMapping("/wxLogin")
 	public String wxLogin(WxUserEntity wxUserEntity, String code) {
-		// 查询Redis是否存在opendId
-		//....
+		// 查询Redis是否存在用户
+		// 这里好像不太能通过用户的微信信息来判断用户
+		// 得想办法从客户端获取用户唯一识别码，方能通过redis缓存用户登陆信息。
 		
 		// 请求微信接口
 		String params = "appid=" + Constants.APPID + "&secret=" + Constants.APPSECRET + "&js_code="
@@ -55,8 +56,6 @@ public class WxUserController extends BaseController{
         	log.info("UserController/wxLogin, 用户信息查询失败");
         	return Constants.ERROR;
         }
-        // OpenId写Redis
-        // ...
         log.info("UserController/wxLogin, 登陆/注册成功返回openid");
         return response;
 	}

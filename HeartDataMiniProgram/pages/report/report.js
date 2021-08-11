@@ -23,7 +23,7 @@ Page({
       duration: 3000
     });
     wx.request({
-      url: 'http://localhost/getReport',
+      url: app.globalData.domain + '/getReport',
       data: {
         openid: app.globalData.openid
       },

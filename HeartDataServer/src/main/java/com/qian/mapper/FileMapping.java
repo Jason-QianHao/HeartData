@@ -27,6 +27,10 @@ public interface FileMapping {
 	@Select("select DISTINCT(`year`) from `file_info` where `pepole_id`=#{pepoleId}")
 	public List<String> getAllYearsByPepoleId(@Param("pepoleId") int pepoleId);
 	
+	
+	
+	
+	
 	/*
 	 * 查询一个人的所有文件
 	 */

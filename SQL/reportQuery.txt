@@ -22,3 +22,21 @@ select * from `month_report`;
 TRUNCATE table `month_report`;
 
 select * from `month_report` WHERE y=2021 ORDER BY m limit 2;
+select id from  `month_report` WHERE y=2021 and m=1;
+
+CREATE TABLE `day_report`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	`y` int(10) NOT NULL COMMENT '年份名称',
+  `m` int(10) NOT NULL COMMENT '月份名称',
+	`d` int(10) NOT NULL COMMENT '天数名称',
+  `imgurl` varchar(100)  NOT NULL COMMENT '图片url',
+	`isUsed` tinyint(1) NOT NULL COMMENT '当日是否使用',
+	`health_index` FLOAT(10) NOT NULL COMMENT '健康指标',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+  PRIMARY KEY (`id`) USING BTREE,
+	INDEX `y` (`y`) USING BTREE,
+	INDEX `m` (`m`) USING BTREE,
+	INDEX `d` (`d`) USING BTREE
+) ENGINE = InnoDB COMMENT = '天报告表';
+
+drop table `day_report`

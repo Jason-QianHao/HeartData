@@ -15,6 +15,8 @@ App({
   },
   globalData: {
     userInfo: null,
-    openid: ""
+    openid: "",
+    pepoleid: "",
+    domain: "http://localhost"
   }
 })

@@ -16,30 +16,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.qian.Entity.FileEntity;
-import com.qian.Entity.algorithm.MonthReport;
-import com.qian.algorithm.Report;
 import com.qian.algorithm.ReportRunable;
-import com.qian.mapper.FileMapping;
-import com.qian.mapper.MonthReportMapping;
-import com.qian.utils.Constants;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class FileService {
+public class FileService extends BaseService{
 
 	@Value("${fileBasePath}")
 	private String fileBasePath;
-	@Autowired
-	private FileMapping fileMapping;
-	@Autowired
-	private MonthReportMapping monthReportMapping;
-	@Autowired
-	private WxUserService wxUserService;
 	@Autowired
 	private ThreadPoolExecutor threadPoolExecutor;
 
@@ -75,74 +62,6 @@ public class FileService {
 		threadPoolExecutor.execute(reportRunable);
 	}
 
-	/*
-	 * 1. 查询某个人所有文件，生成总体报告report 
-	 * 2. 包括每年的基本信息，每年前2个月的缩略信息
-	 * 格式JSON 
-	 * { "data" : [ 
-	 * 	{ "year": "2020", 
-	 * 	  "month": [ 
-	 * 		{ "m": "1",
-	 * 		  "imgurl": "/static/imgs/reports/riqi1.png", 
-	 * 		  "title": "1月报告", 
-	 * 	  	  "description": "1月报告，良好", 
-	 * 		  "analysis": { 
-	 * 			"HealthIndex": "8.0", 
-	 * 			"Other": "" 
-	 * 		  }, 
-	 * 		  "dayLists":[ 
-	 * 			{
-	 * 			  "d" : "1", 
-	 * 		 	  "imgurl": "/static/imgs/reports/riqi1.png", 
-	 * 			  "isUsed": "true",
-	 * 			  "HealthIndex" : "9.9", 
-	 * 			  "fileLists":[ 
-	 * 				{ "id": "1", 
-	 * 				  "createdTime": "2020-01-01 15:00:00", 
-	 * 				  "avgBeat": "75" 
-	 * 				}, { "id": "2", "createdTime":
-	 * "2020-01-01 16:00:00", "avgBeat": "80" }, { "id": "3", "createdTime":
-	 * "2020-01-01 17:00:00", "avgBeat": "60" } ] } ] } ] } ] };
-	 */
-	public String getSummryReport(String openId) {
-		try {
-			// 从redis中，用openId提取pepoleId、
-			// 。。。
-			// 这里先直接从数据库查询
-			int pepoleId = wxUserService.getId(openId);
-			if(pepoleId == -1) {
-				log.info("FileService/getSummryReport, 用户openid查询失败，获取健康报告失败");
-				return Constants.ERROR;
-			}
-			// 查询用户使用年份
-			List<String> allYearsByPepoleId = fileMapping.getAllYearsByPepoleId(pepoleId);
-			// 查询前两个月的信息并封装
-			JSONObject report = new JSONObject();
-			JSONArray yearArray = new JSONArray();
-			for(String year : allYearsByPepoleId) {
-				// 组合简略报告
-				JSONObject smallYearReport = new JSONObject();
-				smallYearReport.put(Constants.YEAR, year);
-				
-				JSONArray monthArray = new JSONArray();
-				List<MonthReport> front2months = monthReportMapping.getFront2months(Integer.valueOf(year), pepoleId);
-				for(MonthReport mR : front2months) {
-					monthArray.add(Report.monthReportJSON(mR));
-				}
-				
-				smallYearReport.put(Constants.MONTH, monthArray);
-				yearArray.add(smallYearReport);
-			}
-			report.put(Constants.DATA, yearArray);
-			log.info("FileService/getSummryReport, 获取健康报告成功" + report.toJSONString());
-			// 算法分析
-			return report.toJSONString();
-		} catch (Exception e) {
-			// TODO: handle exception
-			log.info("FileService/getSummryReport, 获取健康报告失败", e);
-			return Constants.ERROR;
-		}
-	}
 
 	/*
 	 * fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
