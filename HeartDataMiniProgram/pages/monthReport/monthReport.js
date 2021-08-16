@@ -1,4 +1,8 @@
 // pages/monthReport/monthReport.js
+
+// 获取应用实例
+const app = getApp();
+
 Page({
 
   /**
@@ -17,9 +21,47 @@ Page({
     var y = options.year;
     var m = options.month;
     var that = this;
-    // 通过http请求，加载每年前两个月的报告
-    
+    // 通过http请求，加载当前的月报告
+    wx.showToast({
+      title: '月报告获取中...',
+      icon: 'loading',
+      duration: 3000
+    });
+    wx.request({
+      url: app.globalData.domain + '/getMonthReport',
+      data: {
+        year: y,
+        month: m,
+        openid: app.globalData.openid
+      },
+      success(res) {
+        if (res.data == 'error') {
+          wx.showToast({
+            title: '月报告获取失败',
+            icon: 'fail',
+            duration: 2000
+          });
+        } else if (res.data == '500') {
+          wx.showToast({
+            title: '请先登陆',
+            icon: 'fail',
+            duration: 2000
+          });
+          wx.navigateTo({
+            url: '/pages/login/login',
+          });
+        }else {
+          console.log(res.data);
+          that.setData({
+            monthReports: res.data,
+            year: y,
+            month: m
+          });
+        }
+      } 
+    })
     // 解析JSON对象
+    /*
     var res = '{ "data" : ['+
                 '{ '+
                   '"year": "2020",'+
@@ -40,7 +82,7 @@ Page({
                         '},'+
                         '{ "d" : "2",'+
                           '"imgurl": "/static/imgs/reports/riqi2.png",'+
-                          '"isUsed": "false",'+
+                          '"used": "false",'+
                           '"HealthIndex" : ""'+
                         '},'+
                         '{ "d" : "3",'+
@@ -60,5 +102,6 @@ Page({
       month: m,
       monthReports: obj
     });
+    */
   }
 })

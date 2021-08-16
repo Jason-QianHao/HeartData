@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.qian.Entity.algorithm.DayReport;
 import com.qian.Entity.algorithm.MonthReport;
 import com.qian.algorithm.Report;
 import com.qian.mapper.DayReportMapping;
@@ -117,6 +118,43 @@ public class ReportService extends BaseService {
 	 * 根据openid/pepoleid查询某年某月所有天缩略报告
 	 */
 	public String getMonthReport(String year, String month, String openId) {
-		return "";
+		try {
+			// 从redis中，用openId提取pepoleId
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if (pepoleId == -1) {
+				log.info("ReportService/getMonthReport, 用户openid查询失败，获取年度健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询该月所有“天报告”的信息并封装
+			JSONObject report = new JSONObject();
+			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
+
+			// 组合详细月报告
+			JSONObject yearReport = new JSONObject();
+			yearReport.put(Constants.YEAR, year);
+
+			JSONArray monthArray = new JSONArray();
+				// 查询该月报告
+			MonthReport monthReportByYearAndMonth = monthReportMapping.getMonthReportByYearAndMonth(Integer.valueOf(year), 
+					Integer.valueOf(month), pepoleId);
+				// 查询该月所有日报告
+			List<DayReport> allDayReportByYearAndMonth = dayReportMapping.getAllDayReportByYearAndMonth(Integer.valueOf(year), 
+					Integer.valueOf(month), pepoleId);
+			monthReportByYearAndMonth.setDayLists(allDayReportByYearAndMonth);
+			monthArray.add(Report.monthReportJSON(monthReportByYearAndMonth));
+			
+			yearReport.put(Constants.MONTH, monthArray);
+			yearArray.add(yearReport);
+			report.put(Constants.DATA, yearArray);
+			log.info("ReportService/getMonthReport, 获取详细月健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("ReportService/getMonthReport, 获取详细月健康报告失败", e);
+			return Constants.ERROR;
+		}
 	}
 }

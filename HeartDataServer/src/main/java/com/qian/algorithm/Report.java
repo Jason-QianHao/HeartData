@@ -21,7 +21,8 @@ public class Report {
 	 * 		  "analysis": { 
 	 * 			"HealthIndex": "8.0", 
 	 * 			"Other": "" 
-	 * 		  }, 
+	 * 		  },
+       		  "dayLists": [DayReport1, DayReport2...]
 	 */
 	public static JSONObject monthReportJSON(MonthReport monthReport) {
 		JSONObject month = new JSONObject();
@@ -29,10 +30,13 @@ public class Report {
 		month.put(Constants.IMGURL, monthReport.getImgurl());
 		month.put(Constants.TITLE, monthReport.getTitle());
 		month.put(Constants.DESCRIPTION, monthReport.getDescription());
+		
 		JSONObject analysis = new JSONObject();
 		analysis.put(Constants.HEALTHINDEX, monthReport.healthIndex);
 		analysis.put(Constants.OTHER, monthReport.other);
 		month.put(Constants.ANALYSIS, analysis);
+		
+		month.put(Constants.DAYLISTS, monthReport.getDayLists());
 		return month;
 	}
 }

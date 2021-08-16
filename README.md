@@ -491,6 +491,469 @@ public class WxUserController extends BaseController{
 
    <img src="./img/image-20210811180706303.png" alt="image-20210811180706303" style="zoom:50%;" />
 
+## 文件传输和存储服务
+
+​	用户在使用设备期间，传输客户端存储的数据。可以使用文件传输形式或流传输形式。
+
+​	暂时使用文件传输形式。
+
+### 数据库表
+
+```mysql
+CREATE TABLE `file_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+  `file_name` varchar(150) NOT NULL COMMENT '文件名称',
+  `file_url` varchar(100)  NOT NULL COMMENT '文件url',
+	`year` varchar(10) NOT NULL COMMENT '年份',
+	`month` varchar(10) NOT NULL COMMENT '月份',
+	`day` varchar(10) NOT NULL COMMENT '日',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+	`client_created` timestamp(6) NOT NULL COMMENT '客户端创建时间',
+  `server_created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '自动插入，服务器创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `file_name`(`file_name`) USING BTREE,
+  INDEX `pepole_Id`(`pepole_Id`) USING BTREE,
+	INDEX `year` (`year`) USING BTREE,
+	INDEX `month` (`month`) USING BTREE,
+	INDEX `day` (`day`) USING BTREE
+) ENGINE = InnoDB COMMENT = '文件表';
+```
+
+其他部分，等小程序蓝牙部分测试完成后连调。
+
+## 健康报告服务
+
+​	用户在小程序页面点击健康报告后，请求服务器发送健康报告。健康报告分为主页报告、年度报告、月报告、日报告。
+
+### 主页报告
+
+​	主页报告是实现用户所有年份前两个月的缩率报告，缩略报告包括报告名称、简单描述等等。
+
+#### 数据库表
+
+主页报告需要查询月份报告数据库表，包含以下字段。
+
+```mysql
+CREATE TABLE `month_report`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	`y` int(10) NOT NULL COMMENT '年份名称',
+  `m` int(10) NOT NULL COMMENT '月份名称',
+  `imgurl` varchar(100)  NOT NULL COMMENT '图片url',
+	`title` varchar(50) NOT NULL COMMENT '报告标题',
+	`description` varchar(100) NOT NULL COMMENT '简要描述',
+	`health_index` FLOAT(10) NOT NULL COMMENT '健康指标',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+  PRIMARY KEY (`id`) USING BTREE,
+	INDEX `y` (`y`) USING BTREE,
+	INDEX `m` (`m`) USING BTREE
+) ENGINE = InnoDB COMMENT = '月份报告表';
+```
+
+#### Dao层
+
+```java
+public interface MonthReportMapping {
+
+	/*
+	 * 插入一个月份报告
+	 */
+	@Insert("insert into `month_report` values(#{y}, #{m}, #{imgurl}, #{title}, #{description}, #{healthIndex},"
+			+ "#{pepoleId})")
+	public void insertMonthReport(MonthReport monthReport);
+	
+	/*
+	 * 判断月报告是否存在
+	 */
+	@Select("select id from `month_report` WHERE `y`=#{y} and `m`=#{m} and `pepole_id`=#{pepoleId}")
+	public Integer isExist(@Param("y") int year, @Param("m") int month, @Param("pepoleId") int pepoleId);
+	
+	/*
+	 * 根据年份查询所有月份前两个月报告
+	 */
+	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m limit 2;")
+	public List<MonthReport> getFront2months(@Param("y") int year, @Param("pepoleId") int pepoleId);
+}
+
+```
+
+#### Service层
+
+```java
+	public String getSummryReport(String openId) {
+		try {
+			// 从redis中，用openId提取pepoleId
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if (pepoleId == -1) {
+				log.info("ReportService/getSummryReport, 用户openid查询失败，获取健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询用户使用年份
+			List<String> allYearsByPepoleId = fileMapping.getAllYearsByPepoleId(pepoleId);
+			// 查询前两个月的信息并封装
+			JSONObject report = new JSONObject();
+			JSONArray yearArray = new JSONArray();
+			for (String year : allYearsByPepoleId) {
+				// 组合简略报告
+				JSONObject smallYearReport = new JSONObject();
+				smallYearReport.put(Constants.YEAR, year);
+
+				JSONArray monthArray = new JSONArray();
+				List<MonthReport> front2months = monthReportMapping.getFront2months(Integer.valueOf(year), pepoleId);
+				for (MonthReport mR : front2months) {
+					monthArray.add(Report.monthReportJSON(mR));
+				}
+
+				smallYearReport.put(Constants.MONTH, monthArray);
+				yearArray.add(smallYearReport);
+			}
+			report.put(Constants.DATA, yearArray);
+			log.info("ReportService/getSummryReport, 获取健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("ReportService/getSummryReport, 获取健康报告失败", e);
+			return Constants.ERROR;
+		}
+	}
+```
+
+#### Control层
+
+```java
+/*
+	 * 查询用户健康报告首页
+	 */
+	@RequestMapping("/getReport")
+	public String getReport(String openid) {
+		// 查询用户是否存在
+        String isNewWxUser = wxUserService.isNewWxUser(openid);
+        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        	// 是新用户           
+            return Constants.FAILCODE;
+        }else if(isNewWxUser.equals(Constants.ERROR)) {
+        	// 查询失败
+        	log.info("ReportController/getReport, 用户信息查询失败");
+        	return Constants.ERROR;
+        }
+        String summryReport = reportService.getSummryReport(openid);
+        if(summryReport.equals(Constants.ERROR)) {
+        	log.info("ReportController/getReport, 报告获取失败");
+        	return Constants.ERROR;
+        }
+        log.info("ReportController/getReport, 报告获取成功");
+        return summryReport;
+	}
+```
+
+#### 测试
+
+​	在数据库中提前插入以下数据，用于测试。包含2020年最后两个月，和2021年前两个月数据。
+
+<img src="./img/image-20210816162516516.png" alt="image-20210816162516516" style="zoom:50%;" />
+
+1. 本地测试
+
+   浏览器访问服务器主页报告api，参数为用户openid
+
+   <img src="./img/image-20210816162353427.png" alt="image-20210816162353427" style="zoom:50%;" />
+
+   回车后，浏览器以JSON字符串输出结果，和前述格式一致。
+
+   <img src="./img/image-20210816162601940.png" alt="image-20210816162601940" style="zoom:50%;" />
+
+   本地测试正常。
+
+2. 小程序测试
+
+   小程序登陆后访问如下：
+
+   <img src="./img/image-20210816162807166.png" alt="image-20210816162807166" style="zoom:30%;" />
+
+   小程序端访问正常。
+
+### 年度报告
+
+​	年度报告是实现用户当前年份所有月份的缩率报告。
+
+#### Dao层
+
+​	依然使用month_report表即可查询所有月份的缩率报告。
+
+```java
+public interface MonthReportMapping {
+
+	// ...
+  
+	/*
+	 * 根据年份查询所有月份的月报告
+	 */
+	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m;")
+	public List<MonthReport> getAllMonthsByYear(@Param("y") int year, @Param("pepoleId") int pepoleId);
+}
+```
+
+#### Service层
+
+```java
+/*
+	 * 根据openid/pepoleid查询某年所有月缩略报告
+	 */
+	public String getYearReport(String year, String openId) {
+		try {
+			// 从redis中，用openId提取pepoleId
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if (pepoleId == -1) {
+				log.info("ReportService/getYearReport, 用户openid查询失败，获取年度健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询前两个月的信息并封装
+			JSONObject report = new JSONObject();
+			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
+
+			// 组合年度报告
+			JSONObject yearReport = new JSONObject();
+			yearReport.put(Constants.YEAR, year);
+
+			JSONArray monthArray = new JSONArray();
+			List<MonthReport> allMonthsByYear = monthReportMapping.getAllMonthsByYear(Integer.valueOf(year), pepoleId);
+			for (MonthReport mR : allMonthsByYear) {
+				monthArray.add(Report.monthReportJSON(mR));
+			}
+
+			yearReport.put(Constants.MONTH, monthArray);
+			yearArray.add(yearReport);
+			report.put(Constants.DATA, yearArray);
+			log.info("ReportService/getYearReport, 获取年度健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("ReportService/getYearReport, 获取年度健康报告失败", e);
+			return Constants.ERROR;
+		}
+	}
+```
+
+#### Control层
+
+```java
+/*
+	 * 查询用户年度健康报告
+	 */
+	@RequestMapping("/getYearReport")
+	public String getYearReport(String year, String openid) {
+		// 查询用户是否存在
+        String isNewWxUser = wxUserService.isNewWxUser(openid);
+        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        	// 是新用户           
+            return Constants.FAILCODE;
+        }else if(isNewWxUser.equals(Constants.ERROR)) {
+        	// 查询失败
+        	log.info("ReportController/getYearReport, 用户信息查询失败");
+        	return Constants.ERROR;
+        }
+        String yearReport = reportService.getYearReport(year, openid);
+        if(yearReport.equals(Constants.ERROR)) {
+        	log.info("ReportController/getYearReport, 报告获取失败");
+        	return Constants.ERROR;
+        }
+        log.info("ReportController/getYearReport, 报告获取成功");
+        return yearReport;
+	}
+```
+
+#### 测试
+
+​	测试数据依然是下列数据：
+
+<img src="./img/image-20210816162516516.png" alt="image-20210816162516516" style="zoom:50%;" />
+
+1. 本地测试
+
+   浏览器访问服务器主页报告api，参数为用户openid，查询年份year
+
+   <img src="./img/image-20210816163711964.png" alt="image-20210816163711964" style="zoom:50%;" />
+
+   回车后，浏览器以JSON字符串输出结果，和前述格式一致。
+
+   <img src="./img/image-20210816163754129.png" alt="image-20210816163754129" style="zoom:50%;" />
+
+   本地测试结果正常。
+
+2. 小程序测试
+
+   小程序点击2021年的年度报告显示如下：
+
+   <img src="./img/image-20210816163849991.png" alt="image-20210816163849991" style="zoom:33%;" />
+
+   小程序测试正常。
+
+### 月报告
+
+​	月报告是实现用户当前月份每天的缩率报告。日缩率报告包含名称、是否使用。
+
+#### 数据库表
+
+​	月报告需要查询日报告表，包含以下字段：
+
+```mysql
+CREATE TABLE `day_report`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	`y` int(10) NOT NULL COMMENT '年份名称',
+  `m` int(10) NOT NULL COMMENT '月份名称',
+	`d` int(10) NOT NULL COMMENT '天数名称',
+  `imgurl` varchar(100)  NOT NULL COMMENT '图片url',
+	`isUsed` tinyint(1) NOT NULL COMMENT '当日是否使用',
+	`health_index` FLOAT(10) NOT NULL COMMENT '健康指标',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+  PRIMARY KEY (`id`) USING BTREE,
+	INDEX `y` (`y`) USING BTREE,
+	INDEX `m` (`m`) USING BTREE,
+	INDEX `d` (`d`) USING BTREE
+) ENGINE = InnoDB COMMENT = '日报告表';
+```
+
+#### Dao层
+
+```java
+public interface MonthReportMapping {
+
+	// ...
+  
+	/*
+	 * 查询某月的月报告
+	 */
+	@Select("select * from `month_report` WHERE `y`=#{y} and `m`=#{m} and `pepole_id`=#{pepoleId}")
+	public MonthReport getMonthReportByYearAndMonth(@Param("y") int year, @Param("m") int month, @Param("pepoleId") int pepoleId);
+}
+```
+
+```java
+public interface DayReportMapping {
+
+	/*
+	 * 插入一个记录
+	 */
+	@Insert("insert into `day_report` values(#{y}, #{m}, #{d}, #{imgurl}, #{isUsed}, #{healthIndex},"
+			+ "#{pepoleId})")
+	public void insertDayReport(DayReport dayReport);
+	
+	/*
+	 * 根据openid、year、month查询所有缩略日报告
+	 */
+	@Select("select * from `day_report` where `y`=#{y} and `m`=#{m} and `pepole_id`=#{pepoleId} ORDER BY d;")
+	public List<DayReport> getAllDayReportByYearAndMonth(@Param("y") int year, @Param("m") int month, 
+			@Param("pepoleId") int pepoleId);
+}
+```
+
+#### Service层
+
+```java
+/*
+	 * 根据openid/pepoleid查询某年某月所有天缩略报告
+	 */
+	public String getMonthReport(String year, String month, String openId) {
+		try {
+			// 从redis中，用openId提取pepoleId
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if (pepoleId == -1) {
+				log.info("ReportService/getMonthReport, 用户openid查询失败，获取年度健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询该月所有“天报告”的信息并封装
+			JSONObject report = new JSONObject();
+			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
+
+			// 组合详细月报告
+			JSONObject yearReport = new JSONObject();
+			yearReport.put(Constants.YEAR, year);
+
+			JSONArray monthArray = new JSONArray();
+				// 查询该月报告
+			MonthReport monthReportByYearAndMonth = monthReportMapping.getMonthReportByYearAndMonth(Integer.valueOf(year), 
+					Integer.valueOf(month), pepoleId);
+				// 查询该月所有日报告
+			List<DayReport> allDayReportByYearAndMonth = dayReportMapping.getAllDayReportByYearAndMonth(Integer.valueOf(year), 
+					Integer.valueOf(month), pepoleId);
+			monthReportByYearAndMonth.setDayLists(allDayReportByYearAndMonth);
+			monthArray.add(Report.monthReportJSON(monthReportByYearAndMonth));
+			
+			yearReport.put(Constants.MONTH, monthArray);
+			yearArray.add(yearReport);
+			report.put(Constants.DATA, yearArray);
+			log.info("ReportService/getMonthReport, 获取详细月健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("ReportService/getMonthReport, 获取详细月健康报告失败", e);
+			return Constants.ERROR;
+		}
+	}
+```
+
+#### Control层
+
+```java
+/*
+	 * 查询用户详细月健康报告
+	 */
+	@RequestMapping("/getMonthReport")
+	public String getMonthReport(String year, String month, String openid) {
+		// 查询用户是否存在
+        String isNewWxUser = wxUserService.isNewWxUser(openid);
+        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        	// 是新用户           
+            return Constants.FAILCODE;
+        }else if(isNewWxUser.equals(Constants.ERROR)) {
+        	// 查询失败
+        	log.info("ReportController/getMonthReport, 用户信息查询失败");
+        	return Constants.ERROR;
+        }
+        String monthReport = reportService.getMonthReport(year, month, openid);
+        if(monthReport.equals(Constants.ERROR)) {
+        	log.info("ReportController/getMonthReport, 报告获取失败");
+        	return Constants.ERROR;
+        }
+        log.info("ReportController/getMonthReport, 报告获取成功");
+        return monthReport;
+	}
+```
+
+#### 测试
+
+​	在数据库中提前插入以下数据，用于测试。包含2021年8月1-16号的数据。
+
+<img src="./img/image-20210816164659170.png" alt="image-20210816164659170" style="zoom:50%;" />
+
+1. 本地测试
+
+   浏览器访问服务器主页报告api，参数为用户openid，查询年份year，查询月份month。
+
+   <img src="./img/image-20210816164826131.png" alt="image-20210816164826131" style="zoom:50%;" />
+
+   回车后，浏览器以JSON字符串输出结果，和前述格式一致。
+
+   <img src="./img/image-20210816164857167.png" alt="image-20210816164857167" style="zoom:50%;" />
+
+   本地测试正常。
+
+2. 小程序测试
+
+   小程序中点击2021年8月月报告后显示：
+
+   <img src="./img/image-20210816164951428.png" alt="image-20210816164951428" style="zoom:30%;" />
+
+   小程序测试正常。
+
 # 开发笔记
 
 1. 数据读取或者其他参数读取时，判断是否为null或者为""时，注意，null在前，""在后。

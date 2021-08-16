@@ -34,4 +34,5 @@ public interface Constants {
 	String ANALYSIS = "analysis";
 	String HEALTHINDEX = "HealthIndex";
 	String OTHER = "Other";
+	String DAYLISTS = "dayLists";
 }

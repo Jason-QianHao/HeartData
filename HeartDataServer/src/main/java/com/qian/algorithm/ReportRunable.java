@@ -19,13 +19,14 @@ public class ReportRunable implements Runnable{
 		// TODO Auto-generated method stub
 		int y = Integer.valueOf(fileEntity.getYear());
 		int m = Integer.valueOf(fileEntity.getMonth());
+		int pepoleid = fileEntity.getPepoleId();
 		// 算法分析...
 		
 		// 日报告生成和修改..
 		
 		// 月报告生成和修改
 			// 1. 是否生成月报告
-		Integer isExist = monthReportMapping.isExist(y, m);
+		Integer isExist = monthReportMapping.isExist(y, m, pepoleid);
 		if(isExist == null) {
 			// 2. 不存在，创建月报告. 暂时模拟参数，后面需要根据算法结果填入参数。
 			MonthReport mR = new MonthReport();

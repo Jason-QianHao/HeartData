@@ -37,6 +37,23 @@ CREATE TABLE `day_report`  (
 	INDEX `y` (`y`) USING BTREE,
 	INDEX `m` (`m`) USING BTREE,
 	INDEX `d` (`d`) USING BTREE
-) ENGINE = InnoDB COMMENT = '天报告表';
+) ENGINE = InnoDB COMMENT = '日报告表';
 
-drop table `day_report`
+drop table `day_report`;
+select * from `day_report`;
+insert into `day_report` values(null, 2021, 08, 01, '/static/imgs/reports/riqi1.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 02, '/static/imgs/reports/riqi2.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 03, '/static/imgs/reports/riqi3.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 04, '/static/imgs/reports/riqi4.png', 0, 7.9, 1);
+insert into `day_report` values(null, 2021, 08, 05, '/static/imgs/reports/riqi5.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 06, '/static/imgs/reports/riqi6.png', 1, 8.9, 1);
+insert into `day_report` values(null, 2021, 08, 07, '/static/imgs/reports/riqi7.png', 0, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 08, '/static/imgs/reports/riqi8.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 09, '/static/imgs/reports/riqi9.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 10, '/static/imgs/reports/riqi10.png', 0, 9.0, 1);
+insert into `day_report` values(null, 2021, 08, 11, '/static/imgs/reports/riqi11.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 12, '/static/imgs/reports/riqi12.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 13, '/static/imgs/reports/riqi13.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 14, '/static/imgs/reports/riqi14.png', 1, 9.9, 1);
+insert into `day_report` values(null, 2021, 08, 15, '/static/imgs/reports/riqi15.png', 1, 10.9, 1);
+insert into `day_report` values(null, 2021, 08, 16, '/static/imgs/reports/riqi16.png', 0, 9.9, 1);
