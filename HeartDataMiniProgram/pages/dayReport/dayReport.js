@@ -1,6 +1,9 @@
 // pages/dayReport/dayReport.js
-Page({
 
+// 获取应用实例
+const app = getApp();
+
+Page({
   /**
    * 页面的初始数据
    */
@@ -20,7 +23,47 @@ Page({
     var d = options.day;
     var that = this;
     // 通过http请求，加载每年前两个月的报告
-    
+    wx.showToast({
+      title: '日报告获取中...',
+      icon: 'loading',
+      duration: 2000
+    });
+    wx.request({
+      url: app.globalData.domain + '/getDayReport',
+      data: {
+        year: y,
+        month: m,
+        day : d,
+        openid: app.globalData.openid
+      },
+      success(res) {
+        if (res.data == 'error') {
+          wx.showToast({
+            title: '日报告获取失败',
+            icon: 'fail',
+            duration: 2000
+          });
+        } else if (res.data == '500') {
+          wx.showToast({
+            title: '请先登陆',
+            icon: 'fail',
+            duration: 2000
+          });
+          wx.navigateTo({
+            url: '/pages/login/login',
+          });
+        }else {
+          // console.log(res.data);
+          that.setData({
+            dayReports: res.data,
+            year: y,
+            month: m,
+            day: d
+          });
+        }
+      } 
+    })
+    /*
     // 解析JSON对象
     var res = '{ "data" : ['+
                 '{ '+
@@ -38,10 +81,11 @@ Page({
                         '{ "d" : "1",'+
                           '"imgurl": "/static/imgs/reports/riqi1.png",'+
                           '"isUsed": "true",'+
-                          '"HealthIndex" : "9.9",'+
+                          '"healthIndex" : "9.9",'+
                           '"fileLists":['+
                             '{"id": "1",'+
-                              '"createdTime": "2020-01-01 15:00:00",'+
+                              '"startTime": "2020-01-01 15:00:00",'+
+                              '"endTime": "2020-01-01 16:00:00",'+
                               '"avgBeat": "75"'+
                             '},'+
                             '{"id": "2",'+
@@ -67,5 +111,6 @@ Page({
       day: d,
       dayReports: obj
     });
+    */
   }
 })

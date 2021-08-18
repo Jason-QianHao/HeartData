@@ -954,6 +954,40 @@ public interface DayReportMapping {
 
    小程序测试正常。
 
+### 日报告
+
+#### 测试
+
+​	在数据库中提前插入以下数据，用于测试。包含2021年8月16号的3段数据。
+
+<img src="./img/image-20210818134251885.png" alt="image-20210818134251885" style="zoom:50%;" />
+
+1. 本地测试
+
+   浏览器访问服务器主页报告api，参数为用户openid，查询年份year，查询月份month，查询天数day。
+
+   <img src="./img/image-20210818134501290.png" alt="image-20210818134501290" style="zoom:50%;" />
+
+   回车后，浏览器以JSON字符串输出结果，和前述格式一致。
+
+   <img src="./img/image-20210818172505562.png" alt="image-20210818172505562" style="zoom:50%;" />
+
+   本地测试正常。
+
+2. 小程序测试
+
+   小程序中点击2021年8月15日报告后显示：
+
+   <img src="./img/image-20210818172611268.png" alt="image-20210818172611268" style="zoom:50%;" />
+
+# 待开发/改进
+
+1. 使用Redis缓存数据
+2. lombok日志文件配置(完成)
+3. 代码复用的改进，多抽离接口出来
+4. mysql中浮点数存储失败
+5. 小程序报告页面下拉刷新
+
 # 开发笔记
 
 1. 数据读取或者其他参数读取时，判断是否为null或者为""时，注意，null在前，""在后。
@@ -965,4 +999,9 @@ public interface DayReportMapping {
    		}
    ```
 
-   
+2. 数据库里面时间戳的定义timestamp后面的位数是设置ns的精度，一般不显示ns，就直接设置为0.
+
+   ``endTime` timestamp(0) NOT NULL COMMENT '结束时间'`
+
+3. 从数据库读取时间戳到JSON串时，一直无法显示yyyy-mm-dd格式时间。可以通过在Javabean上使用`@JSONField(format="yyyy-MM-dd HH:mm:ss")`注解指定格式，还可以指定JSON串中的其他属性。**注意设定日期时间格式时,HH指使用24小时制,hh是使用12小时制**。
+

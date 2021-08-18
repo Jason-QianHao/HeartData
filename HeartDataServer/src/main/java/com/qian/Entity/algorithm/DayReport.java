@@ -27,8 +27,8 @@ public class DayReport {
   		`pepole_id` int(11) NOT NULL COMMENT '所属人Id',
 	 */
 	private int id;
-	private int year;
-	private int month;
+	private int y;
+	private int m;
 	private int d;
 	private String imgurl;
 	// 1 true 0 false

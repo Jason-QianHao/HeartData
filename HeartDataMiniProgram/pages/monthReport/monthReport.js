@@ -51,7 +51,7 @@ Page({
             url: '/pages/login/login',
           });
         }else {
-          console.log(res.data);
+          // console.log(res.data);
           that.setData({
             monthReports: res.data,
             year: y,

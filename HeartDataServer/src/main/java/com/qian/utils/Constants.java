@@ -16,12 +16,6 @@ public interface Constants {
 	String OPENID = "OPENID";
 	
 	/*
-	 * 小程序相关
-	 */
-	String APPID = "---";
-	String APPSECRET = "---";
-	
-	/*
 	 * 报告相关
 	 */
 	String DATA = "data";
@@ -35,4 +29,11 @@ public interface Constants {
 	String HEALTHINDEX = "HealthIndex";
 	String OTHER = "Other";
 	String DAYLISTS = "dayLists";
+	String D = "d";
+	String ISUSED = "isUsed";
+	String FILELISTS = "fileLists";
+	String ID = "id";
+	String STARTTIME = "startTime";
+	String ENDTIME = "endTime";
+	String AVGBEAT = "avgBeat";
 }

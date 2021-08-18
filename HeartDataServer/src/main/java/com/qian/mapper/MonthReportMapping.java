@@ -24,6 +24,13 @@ public interface MonthReportMapping {
 	public Integer isExist(@Param("y") int year, @Param("m") int month, @Param("pepoleId") int pepoleId);
 	
 	/*
+	 * 根据openId查询一个人报告含有的：
+	 * 所有年份
+	 */
+	@Select("select DISTINCT(`y`) from `month_report` where `pepole_id`=#{pepoleId}")
+	public List<String> getAllYearsByPepoleId(@Param("pepoleId") int pepoleId);
+	
+	/*
 	 * 根据年份查询所有月份前两个月报告
 	 */
 	@Select("select * from `month_report` WHERE `y`=#{y} and `pepole_id`=#{pepoleId}  ORDER BY m limit 2;")

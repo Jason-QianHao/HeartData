@@ -13,4 +13,25 @@ spring:
       # mac / windows passport
       password: ---
       driver-class-name: com.mysql.jdbc.Driver
+#日志
+
+#logging:
+#   config:
+#      classpath: logs/log.xml
+#log:
+#   level: info
+#   path: logs
+#日志最大保留天数
+#   max:
+#      history: 10
+#单个日志文件大小
+#   file: 
+#      size: 1MB
+#日志总大小，单位KB、MB、GB，指的是每个级别的大小，如设置10G，则info/warn/error每个级别的日志都会保存10G
+#   total:
+#      size: 20MB
+
 fileBasePath: ../test/heartFils/
+# 小程序账户配置
+appid: ---
+appsecret: ---

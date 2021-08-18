@@ -10,14 +10,21 @@ CREATE TABLE `month_report`  (
   `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
   PRIMARY KEY (`id`) USING BTREE,
 	INDEX `y` (`y`) USING BTREE,
-	INDEX `m` (`m`) USING BTREE
+	INDEX `m` (`m`) USING BTREE,
+	INDEX `pepole_id` (`pepole_id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '月份报告表';
 
-insert into `month_report` values(null, 2020, 11, 'image2020-11', '11月报告', '11月报告，良好', '8.0', '1');
-insert into `month_report` values(null, 2020, 12, 'image2020-12', '12月报告', '12月报告，良好', '8.2', '1');
-insert into `month_report` values(null, 2021, 07, 'image2021-07', '07月报告', '07月报告，良好', '7.9', '1');
-insert into `month_report` values(null, 2021, 08, 'image2021-08', '08月报告', '08月报告，良好', '8.3', '1');
-insert into `month_report` values(null, 2021, 09, 'image2021-09', '09月报告', '09月报告，良好', '8.0', '1');
+drop table `month_report`;
+insert into `month_report` values(null, 2020, 11, '/static/imgs/reports/riqi11.png', '11月报告', '11月报告，良好', '8.0', '1');
+insert into `month_report` values(null, 2020, 12, '/static/imgs/reports/riqi12.png', '12月报告', '12月报告，良好', '8.2', '1');
+insert into `month_report` values(null, 2021, 01, '/static/imgs/reports/riqi1.png', '01月报告', '01月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 02, '/static/imgs/reports/riqi2.png', '02月报告', '02月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 03, '/static/imgs/reports/riqi3.png', '03月报告', '03月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 04, '/static/imgs/reports/riqi4.png', '04月报告', '04月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 05, '/static/imgs/reports/riqi5.png', '05月报告', '05月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 06, '/static/imgs/reports/riqi6.png', '06月报告', '06月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 07, '/static/imgs/reports/riqi7.png', '07月报告', '07月报告，良好', '7.9', '1');
+insert into `month_report` values(null, 2021, 08, '/static/imgs/reports/riqi8.png', '08月报告', '08月报告，良好', '8.3', '1');
 select * from `month_report`;
 TRUNCATE table `month_report`;
 
@@ -36,7 +43,8 @@ CREATE TABLE `day_report`  (
   PRIMARY KEY (`id`) USING BTREE,
 	INDEX `y` (`y`) USING BTREE,
 	INDEX `m` (`m`) USING BTREE,
-	INDEX `d` (`d`) USING BTREE
+	INDEX `d` (`d`) USING BTREE,
+	INDEX `pepole_id` (`pepole_id`) USING BTREE
 ) ENGINE = InnoDB COMMENT = '日报告表';
 
 drop table `day_report`;
@@ -57,3 +65,27 @@ insert into `day_report` values(null, 2021, 08, 13, '/static/imgs/reports/riqi13
 insert into `day_report` values(null, 2021, 08, 14, '/static/imgs/reports/riqi14.png', 1, 9.9, 1);
 insert into `day_report` values(null, 2021, 08, 15, '/static/imgs/reports/riqi15.png', 1, 10.9, 1);
 insert into `day_report` values(null, 2021, 08, 16, '/static/imgs/reports/riqi16.png', 0, 9.9, 1);
+
+CREATE TABLE `file_report`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	`y` int(10) NOT NULL COMMENT '年份名称',
+  `m` int(10) NOT NULL COMMENT '月份名称',
+	`d` int(10) NOT NULL COMMENT '天数名称',
+	`avgBeat` FLOAT(10) NOT NULL COMMENT '健康指标',
+	`startTime` timestamp(0) NOT NULL COMMENT '开始时间',
+	`endTime` timestamp(0) NOT NULL COMMENT '结束时间',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+  PRIMARY KEY (`id`) USING BTREE,
+	INDEX `y` (`y`) USING BTREE,
+	INDEX `m` (`m`) USING BTREE,
+	INDEX `d` (`d`) USING BTREE,
+	INDEX `startTime` (`startTime`) USING BTREE,
+	INDEX `pepole_id` (`pepole_id`) USING BTREE
+) ENGINE = InnoDB COMMENT = '文件报告表';
+
+drop table `file_report`;
+select * from `file_report`;
+TRUNCATE table `file_report`;
+insert into `file_report` values(null, 2021, 08, 15, 72, '2021-08-15 09:00:00', '2021-08-15 09:30:00', 1);
+insert into `file_report` values(null, 2021, 08, 15, 75, '2021-08-15 12:30:00', '2021-08-15 13:00:00', 1);
+insert into `file_report` values(null, 2021, 08, 15, 73, '2021-08-15 18:00:00', '2021-08-15 18:30:00', 1);

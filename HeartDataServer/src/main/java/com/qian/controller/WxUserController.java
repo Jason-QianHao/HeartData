@@ -1,6 +1,7 @@
 package com.qian.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -8,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.qian.Entity.WxUserEntity;
-import com.qian.service.WxUserService;
 import com.qian.utils.Constants;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +19,10 @@ public class WxUserController extends BaseController{
 
 	@Autowired
 	private RestTemplate restTemplate;
+	@Value("${appid}")
+	private String APPID;
+	@Value("${appsecret}")
+	private String APPSECRET;
 	
 	/*
 	 * 微信用户登陆/注册
@@ -30,7 +34,7 @@ public class WxUserController extends BaseController{
 		// 得想办法从客户端获取用户唯一识别码，方能通过redis缓存用户登陆信息。
 		
 		// 请求微信接口
-		String params = "appid=" + Constants.APPID + "&secret=" + Constants.APPSECRET + "&js_code="
+		String params = "appid=" + APPID + "&secret=" + APPSECRET + "&js_code="
 				+ code + "&grant_type=authorization_code";//参数
         String url = "https://api.weixin.qq.com/sns/jscode2session?"+params;// 微信接口 用于查询oponid
         String response = restTemplate.getForObject(url,String.class);
