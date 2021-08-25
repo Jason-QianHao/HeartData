@@ -19,8 +19,8 @@ public interface WxUserMapping {
 	 * 根据微信用户openId查询用户
 	 * 这里不用返回用户所有信息，使用覆盖索引，提高效率
 	 */
-	@Select("select `open_id` from `wxusers` where `open_id`=#{openId}")
-	public String getOpenId(@Param("openId") String openId);
+	@Select("select `id` from `wxusers` where `open_id`=#{openId}")
+	public int getId(@Param("openId") String openId);
 	
 	/*
 	 * 根据openId查询id

@@ -2,6 +2,8 @@ package com.qian.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,5 +35,14 @@ public class FileController extends BaseController{
 			log.info("FileController/recieveFile, 数据传输失败", e);
 			return "数据传输失败";
 		}
+	}
+	
+	/*
+	 * 接收一个数据点
+	 */
+	@RequestMapping("/recieveData")
+	public String recieveData(HttpServletRequest req, int onedata, int pepoleid, String filepath) {
+		String res = fileService.saveData(req, onedata, pepoleid, filepath);
+		return res;
 	}
 }

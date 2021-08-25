@@ -46,7 +46,7 @@ Page({
                 success(result){
                   // console.log(result.data);
                   if(result.data != "error"){
-                    app.globalData.openid = result.data;
+                    app.globalData.pepoleid = result.data;
                     // console.log(app.globalData.openid);
                     wx.switchTab({
                       url: '/pages/index/index'

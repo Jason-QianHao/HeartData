@@ -7,6 +7,8 @@ const app = getApp()
 // 引入图表插件
 var wxCharts = require('../../utils/wxcharts.js');
 var lineChart = null;
+var flag = false;
+var cnt = 2;
 
 Page({
   data: {
@@ -15,6 +17,8 @@ Page({
     heartdata: [],
     blueTooth: {},
   },
+
+  // 页面初始化加载
   onLoad: function() {
     var that = this;
     var arr1 = new Array(250);
@@ -33,10 +37,63 @@ Page({
     this.OnWxChart([],[],'心电信号');
     // console.log(this.data.userInfo);
   },
-  // 监听蓝牙和数据
 
-  // 绘图
+  //测试文件传输服务
+  testTransport: function () {
+    // var data = new Array(); 
+    // data = this.heartdata;
+    // for(var i = 0; i < 250 - 1; i++){
+    //   data[i] = data[i + 1];
+    // }
+    // data[250 - 1] = cnt;
+    // this.setData({
+    //   heartdata: data
+    // });
+    // 向服务器发送数据
+    wx.request({
+      url: app.globalData.domain + '/recieveData',
+      header: {
+        'Connection': 'keep-alive'
+      },
+      data: {
+        onedata: cnt,
+        pepoleid: app.globalData.pepoleid,
+        filepath: app.globalData.filepath
+      },
+      success(res){
+        if(res.data == '500'){
+          // 关闭蓝牙连接
+          // ....
+          // 提示错误
+          wx.showToast({
+            title: '数据传输服务器失败',
+            icon: 'fail',
+            duration: 2000
+          });
+        }else {
+          // 存储当前服务器文件路径
+          app.globalData.filepath = res.data;
+        }
+      }
+    });
+    // test
+    if(cnt > 5){
+      flag = true;
+    }else if(cnt < 1){
+      flag = false
+    }
+    if(flag){
+      cnt--;
+    }else{
+      cnt++;
+    }
+  },
+
+  // 运行
   action: function () {
+    // 监听蓝牙和数据传输
+    // ...
+    // 绘图
     this.OnWxChart(this.data.x_data,this.data.heartdata,'心电信号');
   },
 

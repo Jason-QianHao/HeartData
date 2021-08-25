@@ -247,6 +247,69 @@
 };
 ```
 
+# 小程序端JS逻辑设计
+
+​	包括具体的蓝牙连接、数据存储、数据上传服务器、波形显示等部分逻辑设计
+
+## 小程序数据流传输
+
+​	利用http1.1的keep-alive模式，保持http长连接，采用单点数据直接上传服务器的数据流方式。
+
+流传输测试代码：
+
+```js
+//测试数据流传输服务
+  testTransport: function () {
+    // var data = new Array(); 
+    // data = this.heartdata;
+    // for(var i = 0; i < 250 - 1; i++){
+    //   data[i] = data[i + 1];
+    // }
+    // data[250 - 1] = cnt;
+    // this.setData({
+    //   heartdata: data
+    // });
+    // 向服务器发送数据
+    wx.request({
+      url: app.globalData.domain + '/recieveData',
+      header: {
+        'Connection': 'keep-alive'
+      },
+      data: {
+        onedata: cnt,
+        pepoleid: app.globalData.pepoleid,
+        filepath: app.globalData.filepath
+      },
+      success(res){
+        if(res.data == '500'){
+          // 关闭蓝牙连接
+          // ....
+          // 提示错误
+          wx.showToast({
+            title: '数据传输服务器失败',
+            icon: 'fail',
+            duration: 2000
+          });
+        }else {
+          // 存储当前服务器文件路径
+          app.globalData.filepath = res.data;
+        }
+      }
+    });
+    // test
+    if(cnt > 5){
+      flag = true;
+    }else if(cnt < 1){
+      flag = false
+    }
+    if(flag){
+      cnt--;
+    }else{
+      cnt++;
+    }
+  },
+```
+
 # 服务端设计
 
 ​	主要包括用户登陆注册服务、文件传输和存储服务、健康报告服务。
@@ -491,7 +554,7 @@ public class WxUserController extends BaseController{
 
    <img src="./img/image-20210811180706303.png" alt="image-20210811180706303" style="zoom:50%;" />
 
-## 文件传输和存储服务
+## 文件/数据流传输和存储服务
 
 ​	用户在使用设备期间，传输客户端存储的数据。可以使用文件传输形式或流传输形式。
 
@@ -519,7 +582,127 @@ CREATE TABLE `file_info`  (
 ) ENGINE = InnoDB COMMENT = '文件表';
 ```
 
-其他部分，等小程序蓝牙部分测试完成后连调。
+### Dao层
+
+```java
+public interface FileMapping {
+
+	/*
+	 * 插入一个文件
+	 */
+	@Insert("insert into `file_info` (`file_name`, `file_url`, `year`, `month`, `day`,"
+			+ " `pepole_id`, `client_created`) "
+			+ "values(#{fileName}, #{fileUrl}, #{year}, #{month}, #{day}"
+			+ ", #{pepoleId}, #{clientCreated});")
+	public void addFile(FileEntity fileEntity);
+  
+}
+```
+
+### Service层
+
+```java
+public class FileService extends BaseService{
+
+	@Value("${fileBasePath}")
+	private String fileBasePath;
+	@Autowired
+	private ThreadPoolExecutor threadPoolExecutor;
+
+	/*
+	 * 将数据插入文件
+	 */
+	public String saveData(HttpServletRequest req, int onedata, int pepoleid, String filepath) {
+		// 判读是否需要新建文件
+		String res = "";
+		BufferedOutputStream out = null;
+		try {
+			if(filepath == null || filepath.equals("")) {
+				String time = TimeUtil.getCurrentTime();
+				String[] strs = time.split(" ");
+				// fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
+				String[] hours = strs[1].split(":");
+				String filename = pepoleid + "_" + strs[0] + "_" + hours[0] + "_" 
+							  + hours[1] + "_" + hours[2] + "_.txt";
+				// 文件名存Session
+				String[] arr = strs[0].split("-");
+				String path = fileBasePath + pepoleid + "/" + arr[0] + "/" + arr[1] + "/" + arr[2];
+				isExist(path);
+				filepath = path + "/" + filename;
+			}
+			out = new BufferedOutputStream(new FileOutputStream(new File(filepath), true));
+			// 这里写入文件不能直接写int会没有反应。
+			out.write(String.valueOf(onedata).getBytes());
+			out.flush();
+			log.info("FileService/saveData, 写入文件成功");
+			res = filepath;
+		} catch (Exception e) {
+			log.info("FileService/saveData, 写入文件失败", e);
+			res = Constants.FAILCODE;
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				log.info("FileService/saveData, 关闭文件失败", e);
+				res = Constants.FAILCODE;
+			}
+		}
+		return res;
+	}
+
+	private void isExist(String path) {
+		File folder = new File(path);
+		if (!folder.exists() && !folder.isDirectory()) {
+			folder.mkdirs();
+			log.info("创建文件夹: " + path);
+		}
+	}
+}
+```
+
+### Control层
+
+```java
+/*
+	 * 接收一个数据点
+	 */
+	@RequestMapping("/recieveData")
+	public String recieveData(HttpServletRequest req, int onedata, int pepoleid, String filepath) {
+		String res = fileService.saveData(req, onedata, pepoleid, filepath);
+		return res;
+	}
+```
+
+### 测试
+
+1. 本地测试
+
+   访问特定url，从浏览器选择文件上传到服务器接口：
+
+   <img src="./img/image-20210824140011286.png" alt="image-20210824140011286" style="zoom:30%;" />
+
+   上传完成后，可以在本地磁盘和数据库中看到结果：
+
+   <img src="./img/image-20210824140212258.png" alt="image-20210824140212258" style="zoom:50%;" />
+
+   ![image-20210824140250196](./img/image-20210824140250196.png)小程序端测试
+
+2. 小程序测试
+
+   小程序采用数据流方式传输数据，在服务器生成文件。
+   
+   小程序点击主页的测试按钮，会在0-6之间递增递减传送。
+   
+   <img src="./img/image-20210825172238643.png" alt="image-20210825172238643" style="zoom:50%;" />
+   
+   不断点击可以看到服务器生成文件并填入数据：
+   
+   <img src="./img/image-20210825172819416.png" alt="image-20210825172819416" style="zoom:40%;" />
+   
+   <img src="./img/image-20210825172719884.png" alt="image-20210825172719884" style="zoom:50%;" />
+   
+   小程序流传输正常
+
 
 ## 健康报告服务
 
@@ -956,6 +1139,167 @@ public interface DayReportMapping {
 
 ### 日报告
 
+#### 数据库表
+
+​	日报告需要查询文件报告表，包含以下字段：
+
+```mysql
+CREATE TABLE `file_report`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
+	`y` int(10) NOT NULL COMMENT '年份名称',
+  `m` int(10) NOT NULL COMMENT '月份名称',
+	`d` int(10) NOT NULL COMMENT '天数名称',
+	`avgBeat` FLOAT(10) NOT NULL COMMENT '健康指标',
+	`startTime` timestamp(0) NOT NULL COMMENT '开始时间',
+	`endTime` timestamp(0) NOT NULL COMMENT '结束时间',
+  `pepole_id` int(11) NOT NULL COMMENT '所属人Id',
+  PRIMARY KEY (`id`) USING BTREE,
+	INDEX `y` (`y`) USING BTREE,
+	INDEX `m` (`m`) USING BTREE,
+	INDEX `d` (`d`) USING BTREE,
+	INDEX `startTime` (`startTime`) USING BTREE,
+	INDEX `pepole_id` (`pepole_id`) USING BTREE
+) ENGINE = InnoDB COMMENT = '文件报告表';
+```
+
+#### 文件JavaBean
+
+```java
+@Setter
+@Getter
+public class FileReport {
+	private int id;
+	private int y;
+	private int m;
+	private int d;
+	private int avgBeat;
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")//首先设定日期时间格式,HH指使用24小时制,hh是使用12小时制
+	private Timestamp startTime;
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	private Timestamp endTime;
+	private int pepoleId;
+}
+```
+
+#### Dao层
+
+```java
+public interface FileReportMapping {
+
+	/*
+	 * 插入一个记录
+	 */
+	@Insert("insert into `file_report` values(null, #{y}, #{m}, #{d}, #{avgBeat}, "
+			+ "#{startTime}, #{endTime}, #{pepoleId});")
+	public void insert(FileReport filReport);
+	
+	/*
+	 * 查询某天的所有文件记录
+	 */
+	@Select("select * from `file_report` where `y`=#{y} and `m`=#{m} and `d`=#{d} and "
+			+ "`pepole_id`=#{pepoleId} ORDER BY `startTime`;")
+	public List<FileReport> getAllFileReport(@Param("y") int year, @Param("m") int month, @Param("d") int day,
+			@Param("pepoleId") int pepoleId);
+}
+```
+
+```java
+public interface DayReportMapping {
+
+	//...
+	
+	/*
+	 * 根据openid、year、month、day查询当日报告
+	 */
+	@Select("select * from `day_report` where `y`=#{y} and `m`=#{m} and `d`=#{d} and `pepole_id`=#{pepoleId};")
+	public DayReport getDayReportByYearAndMonthAndDay(@Param("y") int year, @Param("m") int month, @Param("d") int day,
+			@Param("pepoleId") int pepoleId);
+}
+```
+
+#### Service层
+
+```java
+/*
+	 * 根据openid/pepoleid查询某年某月某天所有的文件报告
+	 */
+	public String getDayReport(String year, String month, String day, String openId) {
+		try {
+			// 从redis中，用openId提取pepoleId
+			// 。。。
+			// 这里先直接从数据库查询
+			int pepoleId = wxUserService.getId(openId);
+			if (pepoleId == -1) {
+				log.info("ReportService/getDayReport, 用户openid查询失败，获取年度健康报告失败");
+				return Constants.ERROR;
+			}
+			// 查询某天所有文件报告的信息并封装
+			JSONObject report = new JSONObject();
+			
+				// 组合年报告
+			JSONObject yearReport = new JSONObject();
+			yearReport.put(Constants.YEAR, year);
+			
+				// 组合月报告
+					// 新建月报告，月报告信息不用传输客户端，不查询数据库
+			MonthReport monthReportByYearAndMonth = new MonthReport();
+					// 查询该月该日报告
+			DayReport dayReportByYearAndMonthAndDay = dayReportMapping.getDayReportByYearAndMonthAndDay(Integer.valueOf(year), 
+					Integer.valueOf(month), Integer.valueOf(day), pepoleId);
+					// 查询改日所有文件报告
+			List<FileReport> allFileReport = fileReportMapping.getAllFileReport(Integer.valueOf(year), 
+					Integer.valueOf(month), Integer.valueOf(day), pepoleId);
+					// 组合字段
+			dayReportByYearAndMonthAndDay.setFileReportLists(allFileReport);
+			List<DayReport> dayLists = new ArrayList<DayReport>();
+			dayLists.add(dayReportByYearAndMonthAndDay);
+			monthReportByYearAndMonth.setDayLists(dayLists);
+			JSONArray monthArray = new JSONArray();
+			monthArray.add(Report.toReportJSON(monthReportByYearAndMonth));
+			
+			yearReport.put(Constants.MONTH, monthArray);
+			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
+			yearArray.add(yearReport);
+			report.put(Constants.DATA, yearArray);
+			log.info("ReportService/getDayReport, 获取详细日健康报告成功" + report.toJSONString());
+			// 算法分析
+			return report.toJSONString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("ReportService/getMonthReport, 获取详细日健康报告失败", e);
+			return Constants.ERROR;
+		}
+	}
+```
+
+#### Control层
+
+```java
+/*
+	 * 查询用户详细日健康报告
+	 */
+	@RequestMapping("/getDayReport")
+	public String getDayReport(String year, String month, String day, String openid) {
+		// 查询用户是否存在
+        String isNewWxUser = wxUserService.isNewWxUser(openid);
+        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        	// 是新用户           
+            return Constants.FAILCODE;
+        }else if(isNewWxUser.equals(Constants.ERROR)) {
+        	// 查询失败
+        	log.info("ReportController/getDayReport, 用户信息查询失败");
+        	return Constants.ERROR;
+        }
+        String dayReport = reportService.getDayReport(year, month, day, openid);
+        if(dayReport.equals(Constants.ERROR)) {
+        	log.info("ReportController/getDayReport, 报告获取失败");
+        	return Constants.ERROR;
+        }
+        log.info("ReportController/getDayReport, 报告获取成功");
+        return dayReport;
+	}
+```
+
 #### 测试
 
 ​	在数据库中提前插入以下数据，用于测试。包含2021年8月16号的3段数据。
@@ -983,10 +1327,15 @@ public interface DayReportMapping {
 # 待开发/改进
 
 1. 使用Redis缓存数据
-2. lombok日志文件配置(完成)
+2. lombok日志文件配置(☑️)
 3. 代码复用的改进，多抽离接口出来
 4. mysql中浮点数存储失败
 5. 小程序报告页面下拉刷新
+6. 小程序蓝牙连接
+7. 文件或数据流上传(☑️)
+8. 小程序动态显示波形
+9. 从文件中生成报告的算法
+10. 小程序和服务器接口的openid改为peopleid
 
 # 开发笔记
 
@@ -1005,3 +1354,11 @@ public interface DayReportMapping {
 
 3. 从数据库读取时间戳到JSON串时，一直无法显示yyyy-mm-dd格式时间。可以通过在Javabean上使用`@JSONField(format="yyyy-MM-dd HH:mm:ss")`注解指定格式，还可以指定JSON串中的其他属性。**注意设定日期时间格式时,HH指使用24小时制,hh是使用12小时制**。
 
+4. Java写本地磁盘文件，可能需要先转为byte数组才能成功写入
+
+   ```java
+   // 这里写入文件不能直接写int会没有反应。
+   out.write(String.valueOf(onedata).getBytes());
+   ```
+
+   

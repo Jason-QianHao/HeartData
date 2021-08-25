@@ -20,13 +20,6 @@ public interface FileMapping {
 			+ ", #{pepoleId}, #{clientCreated});")
 	public void addFile(FileEntity fileEntity);
 	
-	/*
-	 * 根据openId查询一个人报告含有的：
-	 * 所有年份
-	 */
-	@Select("select DISTINCT(`year`) from `file_info` where `pepole_id`=#{pepoleId}")
-	public List<String> getAllYearsByPepoleId(@Param("pepoleId") int pepoleId);
-	
 	
 	
 	

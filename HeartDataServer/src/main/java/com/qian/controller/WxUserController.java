@@ -43,13 +43,15 @@ public class WxUserController extends BaseController{
         log.info("UserController/wxLogin, 微信用户接口返回openid：" + response);
         wxUserEntity.setOpenId(response);
         // 是否是新添加用户
+        int pepoleid = 0;
         String isNewWxUser = wxUserService.isNewWxUser(wxUserEntity.getOpenId());
         if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
         	// 是新用户
             String addResult = wxUserService.addWxUser(wxUserEntity);
-            if(addResult.equals(Constants.SUCCESSCODE)) {
+            if(!addResult.equals(Constants.FAILCODE)) {
             	// 添加成功
             	log.info("UserController/wxLogin, 新用户添加成功");
+            	pepoleid = Integer.valueOf(addResult);
             }else {
             	// 添加失败
             	log.info("UserController/wxLogin, 新用户注册失败");
@@ -59,8 +61,10 @@ public class WxUserController extends BaseController{
         	// 查询失败
         	log.info("UserController/wxLogin, 用户信息查询失败");
         	return Constants.ERROR;
+        }else {
+        	pepoleid = Integer.valueOf(isNewWxUser);
         }
-        log.info("UserController/wxLogin, 登陆/注册成功返回openid");
-        return response;
+        log.info("UserController/wxLogin, 登陆/注册成功返回peopleid");
+        return pepoleid + "";
 	}
 }

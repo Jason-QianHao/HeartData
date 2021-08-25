@@ -17,6 +17,7 @@ App({
     userInfo: null,
     openid: "",
     pepoleid: "",
+    filepath: "",
     domain: "http://localhost"
   }
 })

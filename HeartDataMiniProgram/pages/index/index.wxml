@@ -23,4 +23,6 @@
   </canvas>
   <!--开始连接按钮-->
   <a class="weui-btn weui-btn_primary" bindtap="action">开始连接</a>
+  <!--测试文件传输按钮-->
+  <a class="weui-btn weui-btn_primary" bindtap="testTransport">测试数据/文件传输</a>
 </view>

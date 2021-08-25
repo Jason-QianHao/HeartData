@@ -1,14 +1,19 @@
 package com.qian.service;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.qian.Entity.FileEntity;
 import com.qian.algorithm.ReportRunable;
+import com.qian.utils.Constants;
+import com.qian.utils.TimeUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class FileService extends BaseService{
+public class FileService extends BaseService {
 
 	@Value("${fileBasePath}")
 	private String fileBasePath;
@@ -31,8 +38,7 @@ public class FileService extends BaseService{
 	private ThreadPoolExecutor threadPoolExecutor;
 
 	/*
-	 * 插入一个文件 文件名，以username命名 
-	 * 支持回滚操作。
+	 * 插入一个文件 文件名，以username命名 支持回滚操作。
 	 */
 	@Transactional(rollbackFor = Exception.class)
 	public void addFile(List<MultipartFile> files) throws IOException, ParseException {
@@ -50,10 +56,50 @@ public class FileService extends BaseService{
 			generateReport(entityFromFile);
 		}
 	}
-	
+
 	/*
-	 * 根据当日情况，生成报告，
-	 * 并修改月报告数据。
+	 * 将数据插入文件
+	 */
+	public String saveData(HttpServletRequest req, int onedata, int pepoleid, String filepath) {
+		// 判读是否需要新建文件
+		String res = "";
+		BufferedOutputStream out = null;
+		try {
+			if(filepath == null || filepath.equals("")) {
+				String time = TimeUtil.getCurrentTime();
+				String[] strs = time.split(" ");
+				// fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
+				String[] hours = strs[1].split(":");
+				String filename = pepoleid + "_" + strs[0] + "_" + hours[0] + "_" 
+							  + hours[1] + "_" + hours[2] + "_.txt";
+				// 文件名存Session
+				String[] arr = strs[0].split("-");
+				String path = fileBasePath + pepoleid + "/" + arr[0] + "/" + arr[1] + "/" + arr[2];
+				isExist(path);
+				filepath = path + "/" + filename;
+			}
+			out = new BufferedOutputStream(new FileOutputStream(new File(filepath), true));
+			// 这里写入文件不能直接写int会没有反应。
+			out.write(String.valueOf(onedata + "\r\n").getBytes());
+			out.flush();
+			log.info("FileService/saveData, 写入文件成功");
+			res = filepath;
+		} catch (Exception e) {
+			log.info("FileService/saveData, 写入文件失败", e);
+			res = Constants.FAILCODE;
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				log.info("FileService/saveData, 关闭文件失败", e);
+				res = Constants.FAILCODE;
+			}
+		}
+		return res;
+	}
+
+	/*
+	 * 根据当日情况，生成报告， 并修改月报告数据。
 	 * 
 	 * 可以设置为定时任务每天晚上12点执行，并开启线程进行处理
 	 */
@@ -61,7 +107,6 @@ public class FileService extends BaseService{
 		Runnable reportRunable = new ReportRunable(fileEntity, monthReportMapping);
 		threadPoolExecutor.execute(reportRunable);
 	}
-
 
 	/*
 	 * fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
@@ -92,7 +137,7 @@ public class FileService extends BaseService{
 		File folder = new File(path);
 		if (!folder.exists() && !folder.isDirectory()) {
 			folder.mkdirs();
-			log.info("创建文件夹: " + path);
+			log.info("FileService/isExist, 创建文件夹: " + path);
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class WxUserService {
 		}
 		try {
 			wxUserMapping.insert(wxUserEntity);
-			return Constants.SUCCESSCODE;
+			return wxUserMapping.getId(wxUserEntity.getOpenId()) + "";
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("WxUserService/addWxUser", e);
@@ -42,11 +42,11 @@ public class WxUserService {
 			return Constants.SUCCESSCODE;
 		}
 		try {
-			String res = wxUserMapping.getOpenId(openId);
-			if(res == null || res.equals("")) {
+			int pepoleid = wxUserMapping.getId(openId);
+			if(pepoleid == 0) {
 				return Constants.SUCCESSCODE;
 			}else {
-				return Constants.FAILCODE;
+				return pepoleid + "";
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
