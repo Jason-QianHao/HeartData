@@ -17,7 +17,10 @@ public class WxUserService {
 	private WxUserMapping wxUserMapping;
 	
 	/*
-	 * 添加用户
+	 * 功能：添加用户
+	 * 返回：
+	 * 	1. 错误信息
+	 *  2. 数据库id
 	 */
 	public String addWxUser(WxUserEntity wxUserEntity) {
 		if(wxUserEntity == null) {
@@ -34,7 +37,11 @@ public class WxUserService {
 	}
 	
 	/*
-	 * 根据openId判断是否是新用户
+	 * 功能：根据openId判断是否是新用户
+	 * 返回：
+	 * 	1. 是新用户 Constants.SUCCESSCOD
+	 *  2. 已存在账号 pepoleid
+	 *  3. 查询错误 Constants.ERROR
 	 */
 	public String isNewWxUser(String openId) {
 		// 注意这里null和""的判读不能写反了。
@@ -46,7 +53,7 @@ public class WxUserService {
 			if(pepoleid == 0) {
 				return Constants.SUCCESSCODE;
 			}else {
-				return pepoleid + "";
+				return String.valueOf(pepoleid);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

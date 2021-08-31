@@ -15,9 +15,9 @@ App({
   },
   globalData: {
     userInfo: null,
-    openid: "",
+    //openid: "", // 之前用作测试，后面openid不传到小程序端
     pepoleid: "",
     filepath: "",
-    domain: "http://localhost"
+    domain: "http://3a40r96515.zicp.vip"
   }
 })

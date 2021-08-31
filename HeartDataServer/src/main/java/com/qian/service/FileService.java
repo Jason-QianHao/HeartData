@@ -58,7 +58,11 @@ public class FileService extends BaseService {
 	}
 
 	/*
-	 * 将数据插入文件
+	 * 功能：将数据插入文件
+	 * 返回：
+	 * 	1. 插入成功 filepath
+	 * 	2. 文件操作失败 Constants.FAILCODE
+	 * 备注：小程序最后需要发送结束符号 -1
 	 */
 	public String saveData(HttpServletRequest req, int onedata, int pepoleid, String filepath) {
 		// 判读是否需要新建文件
@@ -68,22 +72,38 @@ public class FileService extends BaseService {
 			if(filepath == null || filepath.equals("")) {
 				String time = TimeUtil.getCurrentTime();
 				String[] strs = time.split(" ");
-				// fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 0_2021-07-29_16_38_01_.txt
+				// fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 1_2021-07-29_16_38_01_.txt
 				String[] hours = strs[1].split(":");
 				String filename = pepoleid + "_" + strs[0] + "_" + hours[0] + "_" 
 							  + hours[1] + "_" + hours[2] + "_.txt";
-				// 文件名存Session
 				String[] arr = strs[0].split("-");
 				String path = fileBasePath + pepoleid + "/" + arr[0] + "/" + arr[1] + "/" + arr[2];
 				isExist(path);
 				filepath = path + "/" + filename;
 			}
-			out = new BufferedOutputStream(new FileOutputStream(new File(filepath), true));
-			// 这里写入文件不能直接写int会没有反应。
-			out.write(String.valueOf(onedata + "\r\n").getBytes());
-			out.flush();
-			log.info("FileService/saveData, 写入文件成功");
-			res = filepath;
+			// 发送结束
+			if(onedata == -1) {
+				try {
+					FileEntity addFileInfo = addFileInfo(filepath);
+					// 生成结束时间戳
+					String endTime = TimeUtil.getCurrentTime();
+					addFileInfo.setServerCreated(new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+							.parse(endTime).getTime()));
+					// 插入数据库
+					fileMapping.addFile(addFileInfo);
+					log.info("FileService/saveData, 插入数据库成功");
+				} catch (Exception e) {
+					// TODO: handle exception
+					log.info("FileService/saveData, 插入数据库失败");
+				}
+			}else {
+				out = new BufferedOutputStream(new FileOutputStream(new File(filepath), true));
+				// 这里写入文件不能直接写int会没有反应
+				out.write(String.valueOf(onedata + "\r\n").getBytes());
+				out.flush();
+				log.info("FileService/saveData, 写入文件成功");
+				res = filepath;
+			}
 		} catch (Exception e) {
 			log.info("FileService/saveData, 写入文件失败", e);
 			res = Constants.FAILCODE;
@@ -98,6 +118,31 @@ public class FileService extends BaseService {
 		return res;
 	}
 
+	/*
+	 * fileName格式：pepoleId_yy-mm-dd_hh_mm_ss_.txt 1_2021-07-29_16_38_01_.txt
+	 */
+	private FileEntity addFileInfo(String fileName) throws ParseException {
+		String[] strs = fileName.split("_");
+		String pepoleId = strs[0];
+		String TimeStamp_Day = strs[1];
+		String TimeStamp_Time = strs[2] + ":" + strs[3] + ":" + strs[4];
+		// 分割时间戳，建立文件夹
+		String[] arr = TimeStamp_Day.split("-"); // [yy, mm, dd]
+		String filePath = fileBasePath + pepoleId + "/" + arr[0] + "/" + arr[1] + "/" + arr[2];
+		isExist(filePath);
+		// 组合文件类
+		FileEntity fileEntity = new FileEntity();
+		fileEntity.setYear(arr[0]);
+		fileEntity.setMonth(arr[1]);
+		fileEntity.setDay(arr[2]);
+		fileEntity.setPepoleId(Integer.valueOf(pepoleId));
+		fileEntity.setFileUrl(filePath + "/" + fileName);
+		fileEntity.setFileName(fileName);
+		fileEntity.setClientCreated(new Timestamp(
+				new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(TimeStamp_Day + " " + TimeStamp_Time).getTime()));
+		return fileEntity;
+	}
+	
 	/*
 	 * 根据当日情况，生成报告， 并修改月报告数据。
 	 * 

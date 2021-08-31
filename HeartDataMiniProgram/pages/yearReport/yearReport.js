@@ -28,7 +28,7 @@ Page({
       url: app.globalData.domain + '/getYearReport',
       data: {
         year: y,
-        openid: app.globalData.openid
+        pepoleid: app.globalData.pepoleid
       },
       success(res) {
         if (res.data == 'error') {

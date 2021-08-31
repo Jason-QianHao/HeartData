@@ -251,6 +251,61 @@
 
 ​	包括具体的蓝牙连接、数据存储、数据上传服务器、波形显示等部分逻辑设计
 
+## 蓝牙连接
+
+### 蓝牙搜索
+
+​	在点击"开始连接"按钮后，弹出附件可连接的蓝牙设备。
+
+1. js
+
+   ```js
+   ble: function () {
+       // 显示蓝牙列表
+       this.setData({
+         showBluetoothDevices: true
+         // bleLists: [{"deviceId":1, "name":2}]
+       });
+       // 搜索蓝牙
+         // 初始化蓝牙模块
+       wx.openBluetoothAdapter({
+         success: function (res) {
+           // 开始搜寻附近的蓝牙外围设备
+           wx.startBluetoothDevicesDiscovery({
+             services: [] // 要搜索的蓝牙设备主服务的 UUID 列表（支持 16/32/128 位 UUID）
+           })
+         }
+       });
+       // 获取在蓝牙模块生效期间所有搜索到的蓝牙设备。
+       // 这里不用that会报错 why???
+       var that = this;
+       wx.getBluetoothDevices({
+         success: function (res) {
+           // success
+           //{devices: Array[11], errMsg: "getBluetoothDevices:ok"}
+           // console.log("getBluetoothDevices");
+           // console.log(res);
+           that.setData({
+             bleLists: res.devices
+           });
+           // console.log(that.data.bleLists);
+         }
+       })
+     },
+   ```
+
+2. 测试
+
+   开发工具没有蓝牙测试权限，在iphone X测试如下：
+
+   <img src="../../Typora/picture/image-20210831190137880.png" alt="image-20210831190137880" style="zoom:20%;" />
+
+   搜索蓝牙成功。
+
+### 蓝牙传输数据
+
+
+
 ## 小程序数据流传输
 
 ​	利用http1.1的keep-alive模式，保持http长连接，采用单点数据直接上传服务器的数据流方式。
@@ -1329,13 +1384,13 @@ public interface DayReportMapping {
 1. 使用Redis缓存数据
 2. lombok日志文件配置(☑️)
 3. 代码复用的改进，多抽离接口出来
-4. mysql中浮点数存储失败
+4. mysql中浮点数存储失败(☑️)
 5. 小程序报告页面下拉刷新
 6. 小程序蓝牙连接
 7. 文件或数据流上传(☑️)
 8. 小程序动态显示波形
 9. 从文件中生成报告的算法
-10. 小程序和服务器接口的openid改为peopleid
+10. 小程序和服务器接口的openid改为peopleid(☑️)
 
 # 开发笔记
 
@@ -1361,4 +1416,7 @@ public interface DayReportMapping {
    out.write(String.valueOf(onedata).getBytes());
    ```
 
-   
+
+5. 小程序在手机上访问时，因为有网络请求，需要开启：
+   - 手机开启调试模式
+   - 域名不可以为localhost，可以开启内网工具映射

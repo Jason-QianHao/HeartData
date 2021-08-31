@@ -25,7 +25,7 @@ Page({
     wx.request({
       url: app.globalData.domain + '/getReport',
       data: {
-        openid: app.globalData.openid
+        pepoleid: app.globalData.pepoleid
       },
       success(res){
         if(res.data == 'error'){

@@ -20,18 +20,13 @@ public class ReportController extends BaseController{
 	 * 查询用户健康报告首页
 	 */
 	@RequestMapping("/getReport")
-	public String getReport(String openid) {
+	public String getReport(int pepoleid) {
 		// 查询用户是否存在
-        String isNewWxUser = wxUserService.isNewWxUser(openid);
-        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        if(pepoleid == 0) {
         	// 是新用户           
             return Constants.FAILCODE;
-        }else if(isNewWxUser.equals(Constants.ERROR)) {
-        	// 查询失败
-        	log.info("ReportController/getReport, 用户信息查询失败");
-        	return Constants.ERROR;
         }
-        String summryReport = reportService.getSummryReport(openid);
+        String summryReport = reportService.getSummryReport(pepoleid);
         if(summryReport.equals(Constants.ERROR)) {
         	log.info("ReportController/getReport, 报告获取失败");
         	return Constants.ERROR;
@@ -44,18 +39,13 @@ public class ReportController extends BaseController{
 	 * 查询用户年度健康报告
 	 */
 	@RequestMapping("/getYearReport")
-	public String getYearReport(String year, String openid) {
+	public String getYearReport(String year, int pepoleid) {
 		// 查询用户是否存在
-        String isNewWxUser = wxUserService.isNewWxUser(openid);
-        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        if(pepoleid == 0) {
         	// 是新用户           
             return Constants.FAILCODE;
-        }else if(isNewWxUser.equals(Constants.ERROR)) {
-        	// 查询失败
-        	log.info("ReportController/getYearReport, 用户信息查询失败");
-        	return Constants.ERROR;
         }
-        String yearReport = reportService.getYearReport(year, openid);
+        String yearReport = reportService.getYearReport(year, pepoleid);
         if(yearReport.equals(Constants.ERROR)) {
         	log.info("ReportController/getYearReport, 报告获取失败");
         	return Constants.ERROR;
@@ -68,18 +58,13 @@ public class ReportController extends BaseController{
 	 * 查询用户详细月健康报告
 	 */
 	@RequestMapping("/getMonthReport")
-	public String getMonthReport(String year, String month, String openid) {
+	public String getMonthReport(String year, String month, int pepoleid) {
 		// 查询用户是否存在
-        String isNewWxUser = wxUserService.isNewWxUser(openid);
-        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        if(pepoleid == 0) {
         	// 是新用户           
             return Constants.FAILCODE;
-        }else if(isNewWxUser.equals(Constants.ERROR)) {
-        	// 查询失败
-        	log.info("ReportController/getMonthReport, 用户信息查询失败");
-        	return Constants.ERROR;
         }
-        String monthReport = reportService.getMonthReport(year, month, openid);
+        String monthReport = reportService.getMonthReport(year, month, pepoleid);
         if(monthReport.equals(Constants.ERROR)) {
         	log.info("ReportController/getMonthReport, 报告获取失败");
         	return Constants.ERROR;
@@ -92,18 +77,13 @@ public class ReportController extends BaseController{
 	 * 查询用户详细日健康报告
 	 */
 	@RequestMapping("/getDayReport")
-	public String getDayReport(String year, String month, String day, String openid) {
+	public String getDayReport(String year, String month, String day, int pepoleid) {
 		// 查询用户是否存在
-        String isNewWxUser = wxUserService.isNewWxUser(openid);
-        if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
+        if(pepoleid == 0) {
         	// 是新用户           
             return Constants.FAILCODE;
-        }else if(isNewWxUser.equals(Constants.ERROR)) {
-        	// 查询失败
-        	log.info("ReportController/getDayReport, 用户信息查询失败");
-        	return Constants.ERROR;
         }
-        String dayReport = reportService.getDayReport(year, month, day, openid);
+        String dayReport = reportService.getDayReport(year, month, day, pepoleid);
         if(dayReport.equals(Constants.ERROR)) {
         	log.info("ReportController/getDayReport, 报告获取失败");
         	return Constants.ERROR;

@@ -66,10 +66,11 @@ Page({
                     icon: 'fail',
                     duration: 2000
                   });
+                  // console.log(res);
                 }
               })
             } else {
-              console.log('登录失败！' + res.errMsg)
+              // console.log('登录失败！' + res.errMsg)
             }
           }
         });

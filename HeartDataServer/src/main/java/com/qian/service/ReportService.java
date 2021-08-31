@@ -31,16 +31,8 @@ public class ReportService extends BaseService {
 	 * 1. 查询某个人所有文件，生成总体报告report 
 	 * 2. 包括每年的基本信息，每年前2个月的缩略信息 格式JSON 
 	 */
-	public String getSummryReport(String openId) {
+	public String getSummryReport(int pepoleId) {
 		try {
-			// 从redis中，用openId提取pepoleId
-			// 。。。
-			// 这里先直接从数据库查询
-			int pepoleId = wxUserService.getId(openId);
-			if (pepoleId == -1) {
-				log.info("ReportService/getSummryReport, 用户openid查询失败，获取健康报告失败");
-				return Constants.ERROR;
-			}
 			// 查询用户使用年份
 			List<String> allYearsByPepoleId = monthReportMapping.getAllYearsByPepoleId(pepoleId);
 			// 查询前两个月的信息并封装
@@ -74,16 +66,8 @@ public class ReportService extends BaseService {
 	/*
 	 * 根据openid/pepoleid查询某年所有月缩略报告
 	 */
-	public String getYearReport(String year, String openId) {
+	public String getYearReport(String year, int pepoleId) {
 		try {
-			// 从redis中，用openId提取pepoleId
-			// 。。。
-			// 这里先直接从数据库查询
-			int pepoleId = wxUserService.getId(openId);
-			if (pepoleId == -1) {
-				log.info("ReportService/getYearReport, 用户openid查询失败，获取年度健康报告失败");
-				return Constants.ERROR;
-			}
 			// 查询前两个月的信息并封装
 			JSONObject report = new JSONObject();
 			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
@@ -114,16 +98,8 @@ public class ReportService extends BaseService {
 	/*
 	 * 根据openid/pepoleid查询某年某月所有天缩略报告
 	 */
-	public String getMonthReport(String year, String month, String openId) {
+	public String getMonthReport(String year, String month, int pepoleId) {
 		try {
-			// 从redis中，用openId提取pepoleId
-			// 。。。
-			// 这里先直接从数据库查询
-			int pepoleId = wxUserService.getId(openId);
-			if (pepoleId == -1) {
-				log.info("ReportService/getMonthReport, 用户openid查询失败，获取年度健康报告失败");
-				return Constants.ERROR;
-			}
 			// 查询该月所有“天报告”的信息并封装
 			JSONObject report = new JSONObject();
 			JSONArray yearArray = new JSONArray(); // 小程序端只使用数组的第一个值
@@ -158,16 +134,8 @@ public class ReportService extends BaseService {
 	/*
 	 * 根据openid/pepoleid查询某年某月某天所有的文件报告
 	 */
-	public String getDayReport(String year, String month, String day, String openId) {
+	public String getDayReport(String year, String month, String day, int pepoleId) {
 		try {
-			// 从redis中，用openId提取pepoleId
-			// 。。。
-			// 这里先直接从数据库查询
-			int pepoleId = wxUserService.getId(openId);
-			if (pepoleId == -1) {
-				log.info("ReportService/getDayReport, 用户openid查询失败，获取年度健康报告失败");
-				return Constants.ERROR;
-			}
 			// 查询某天所有文件报告的信息并封装
 			JSONObject report = new JSONObject();
 			

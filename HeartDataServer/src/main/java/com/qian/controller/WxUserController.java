@@ -65,6 +65,6 @@ public class WxUserController extends BaseController{
         	pepoleid = Integer.valueOf(isNewWxUser);
         }
         log.info("UserController/wxLogin, 登陆/注册成功返回peopleid");
-        return pepoleid + "";
+        return String.valueOf(pepoleid);
 	}
 }

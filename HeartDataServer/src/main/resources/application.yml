@@ -11,7 +11,7 @@ spring:
       url: jdbc:mysql://localhost:3306/heartdata
       username: root
       # mac / windows passport
-      password: qianhao123
+      password: ---
       driver-class-name: com.mysql.jdbc.Driver
 #日志
 
@@ -31,7 +31,7 @@ spring:
 #   total:
 #      size: 20MB
 
-fileBasePath: ../test/heartFils/
+fileBasePath: /Users/qianhao/Jason/Software/Git/HeartData/test/heartFils/
 # 小程序账户配置
-appid: wx1ff9b9e66c4a19d1
-appsecret: 4d462f92cc8332358b6c949607dde403
+appid: ---
+appsecret: ---

@@ -34,7 +34,7 @@ Page({
         year: y,
         month: m,
         day : d,
-        openid: app.globalData.openid
+        pepoleid: app.globalData.pepoleid
       },
       success(res) {
         if (res.data == 'error') {

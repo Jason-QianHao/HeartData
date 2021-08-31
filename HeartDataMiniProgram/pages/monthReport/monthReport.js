@@ -32,7 +32,7 @@ Page({
       data: {
         year: y,
         month: m,
-        openid: app.globalData.openid
+        pepoleid: app.globalData.pepoleid
       },
       success(res) {
         if (res.data == 'error') {
