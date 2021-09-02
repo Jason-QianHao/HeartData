@@ -249,9 +249,9 @@
 
 # 小程序端JS逻辑设计
 
-​	包括具体的蓝牙连接、数据存储、数据上传服务器、波形显示等部分逻辑设计
+​	包括具体的蓝牙、数据存储、数据上传服务器、波形显示等部分逻辑设计
 
-## 蓝牙连接
+## 蓝牙
 
 ### 蓝牙搜索
 
@@ -302,7 +302,105 @@
 
    搜索蓝牙成功。
 
-### 蓝牙传输数据
+### 蓝牙连接
+
+1. js
+
+   ```js
+     ble: function () {
+       /**
+        * 初始化蓝牙模块
+        */
+       wx.openBluetoothAdapter({
+         success: function (res) {
+           /**
+            * 开始搜寻附近的蓝牙外围设备
+            */ 
+           wx.startBluetoothDevicesDiscovery({
+             services: [] // 要搜索的蓝牙设备主服务的 UUID 列表（支持 16/32/128 位 UUID）
+           })
+         }
+       });
+       // 获取在蓝牙模块生效期间所有搜索到的蓝牙设备。
+       var that = this;
+       wx.getBluetoothDevices({
+         success: function (res) {
+           that.setData({
+             bleLists: res.devices
+           });
+         }
+       });
+     },
+       
+    connectBle: function (e) {
+       var that = this;
+       /**
+        * 监听蓝牙低功耗连接状态的改变事件。包括开发者主动连接或断开连接，设备丢失，连接异常断开等等
+        */
+       wx.onBLEConnectionStateChange(function (res) {
+         console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
+       });
+       /** 
+        * 连接蓝牙低功耗设备。若小程序在之前已有搜索过某个蓝牙设备，并成功建立连接，可直接传入之前搜索获取的 deviceId 直接尝试连接该设备，无需再次进行搜索操作。
+        */
+       wx.createBLEConnection({
+         success: function () {
+           /**
+            * 连接成功后开始获取设备的服务列表(service)。
+            */
+           wx.getBLEDeviceServices({
+               /**
+                * 设定一个定时器。在定时到期以后执行注册的回调函数
+                * 延迟3秒，根据服务获取特征 
+                */
+               setTimeout(
+                 function () {
+                   /**
+                    * 获取蓝牙低功耗设备某个服务中所有特征 (characteristic)。
+                    */
+                   wx.getBLEDeviceCharacteristics({
+                     success: function (res) {
+                       /** 
+                        * 获取设备特征列表
+                        * 属性	       类型	   说明
+                        * uuid	      string	蓝牙设备特征的 UUID
+                        * properties	Object	该特征支持的操作类型
+                        */
+                       console.log('device getBLEDeviceCharacteristics:', res.characteristics);
+                       /**
+                        * 启用蓝牙低功耗设备特征值变化时的 notify 功能，订阅特征。注意：必须设备的特征支持 notify 或者 indicate 才可以成功调用。
+                        * 顺序开发设备特征notifiy
+                        */
+                       wx.notifyBLECharacteristicValueChange({
+                       });
+                       /**
+                        * 监听蓝牙低功耗设备的特征值变化事件。必须先调用 wx.notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
+                        * 回调获取 设备发过来的数据
+                        */
+                       wx.onBLECharacteristicValueChange(function (characteristic) {
+                       });
+                     }
+                   });
+                 },
+                 1500);
+             }
+           })
+         }
+       });
+     },
+   ```
+
+   2. 测试
+
+      以上图搜索到我的ipad为例，点击连接:
+
+      <img src="./img/image-20210902161608501.png" alt="image-20210902161608501" style="zoom:50%;" />
+
+      在Mac的开发工具上蓝牙功能不能正常使用，下图使用Iphone x进行测试。红色方框为蓝牙所有的服务列表和对应的uuid，蓝色方框为选中服务（默认选择了第一个，具体使用时可配置）的特征uuid列表。
+
+<img src="./img/iShot2021-09-02%2016.05.42.png" alt="iShot2021-09-02 16.05.42" style="zoom:20%;" />
+
+### 蓝牙传输
 
 
 
