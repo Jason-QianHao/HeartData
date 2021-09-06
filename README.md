@@ -298,7 +298,7 @@
 
    开发工具没有蓝牙测试权限，在iphone X测试如下：
 
-   <img src="../../Typora/picture/image-20210831190137880.png" alt="image-20210831190137880" style="zoom:20%;" />
+   <img src="./img/image-20210831190137880.png" alt="image-20210831190137880" style="zoom:20%;" />
 
    搜索蓝牙成功。
 
@@ -402,7 +402,17 @@
 
 ### 蓝牙传输
 
+​	由于小程序只支持BLE，不能在手机等传统蓝牙模式下进行数据测试，后续测试等到校后使用硬件设备测试即可。现整理原app的蓝牙部分连接逻辑如下：
 
+<img src="./img/image-20210906125841945.png" alt="image-20210906125841945" style="zoom:60%;" />
+
+<img src="./img/image-20210906125859458.png" alt="image-20210906125859458" style="zoom:60%;" />
+
+<img src="./img/image-20210906125909747.png" alt="image-20210906125909747" style="zoom:60%;" />
+
+<img src="./img/image-20210906125928998.png" alt="image-20210906125928998" style="zoom:60%;" />
+
+<img src="./img/image-20210906130015492.png" alt="image-20210906130015492" style="zoom:60%;" />
 
 ## 小程序数据流传输
 
@@ -1294,7 +1304,7 @@ public interface DayReportMapping {
 
 #### 数据库表
 
-​	日报告需要查询文件报告表，包含以下字段：
+	日报告需要查询文件报告表，包含以下字段：
 
 ```mysql
 CREATE TABLE `file_report`  (
@@ -1455,7 +1465,7 @@ public interface DayReportMapping {
 
 #### 测试
 
-​	在数据库中提前插入以下数据，用于测试。包含2021年8月16号的3段数据。
+	在数据库中提前插入以下数据，用于测试。包含2021年8月16号的3段数据。
 
 <img src="./img/image-20210818134251885.png" alt="image-20210818134251885" style="zoom:50%;" />
 
