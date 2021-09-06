@@ -47,6 +47,54 @@ Page({
     });
     // this.OnWxChart([], [], '心电信号');
     // console.log(this.data.userInfo);
+    /**
+     * 1.初始化蓝牙模块
+     * 其他蓝牙相关 API 必须在 wx.openBluetoothAdapter 调用之后使用。否则 API 会返回错误（errCode=10000）
+     * 如果设备已经打开蓝牙会报错：openBluetoothAdapter:fail already opened，但是不影响逻辑进success
+     */
+    wx.openBluetoothAdapter({
+      mode: "central",
+      success: function (res) {
+        console.log('蓝牙适配器初始化成功 central', res.errMsg);
+      },
+      fail: function (res) {
+        console.log('蓝牙适配器初始化异常 central', res.errMsg);
+      }
+    });
+    wx.openBluetoothAdapter({
+      mode: "peripheral",
+      success: function (res) {
+        console.log('蓝牙适配器初始化成功 peripheral', res.errMsg);
+      },
+      fail: function (res) {
+        console.log('蓝牙适配器初始化异常 peripheral', res.errMsg);
+      }
+    });
+    /**
+     * 2. 获取本机蓝牙适配器状态
+     */
+    wx.getBluetoothAdapterState({
+      success: function (res) {
+        console.log('获取本机蓝牙适配器状态', res.errMsg);
+        wx.showToast({
+          title: "蓝牙已开启",
+          duration: 2000
+        });
+      },
+      fail: function (res) {
+        console.log('获取本机蓝牙适配器状态', res.errMsg);
+        wx.showToast({
+          title: "蓝牙状态异常",
+          duration: 2000
+        });
+      }
+    });
+    /**
+     *  3. 监听蓝牙适配器状态变化事件
+     */
+    wx.onBluetoothAdapterStateChange(function (res) {
+      console.log(`adapterState changed, now is`, res)
+    });
   },
 
   //测试文件传输服务
@@ -109,83 +157,85 @@ Page({
   },
 
   ble: function () {
-    // 显示蓝牙列表
+    // 弹出蓝牙列表
     this.setData({
       showBluetoothDevices: true
-      // bleLists: [{"deviceId":1, "name":2}]
     });
-    // 搜索蓝牙
     /**
-     * 初始化蓝牙模块
-     * 其他蓝牙相关 API 必须在 wx.openBluetoothAdapter 调用之后使用。否则 API 会返回错误（errCode=10000）
-     * 如果设备已经打开蓝牙会报错：openBluetoothAdapter:fail already opened，但是不影响逻辑进success
+     * 4. 开始搜寻附近的蓝牙外围设备
      */
-    wx.openBluetoothAdapter({
+    wx.startBluetoothDevicesDiscovery({
       success: function (res) {
-        /**
-         * 开始搜寻附近的蓝牙外围设备
-         */ 
-        wx.startBluetoothDevicesDiscovery({
-          services: [] // 要搜索的蓝牙设备主服务的 UUID 列表（支持 16/32/128 位 UUID）
-        })
-      },
-      fail: function (res) {
-        console.log(res);
+        console.log('开始搜寻附近的蓝牙外围设备', res);
       }
     });
-    // 获取在蓝牙模块生效期间所有搜索到的蓝牙设备。
-    // 这里不用that会报错 why???
+    wx.showToast({
+      title: "搜索中...",
+      duration: 2000
+    });
     var that = this;
-    wx.getBluetoothDevices({
-      success: function (res) {
-        // success
-        //{devices: Array[11], errMsg: "getBluetoothDevices:ok"}
-        // console.log("getBluetoothDevices");
-        console.log(res);
-        that.setData({
-          bleLists: res.devices
-        });
-        // console.log(that.data.bleLists);
-      }
-    })
+    setTimeout(function () {
+      /**
+       * 5. 获取在蓝牙模块生效期间所有搜索到的蓝牙设备。
+       * 这里不用that会报错 why???
+       */
+      wx.getBluetoothDevices({
+        success: function (res) {
+          console.log('获取所有已发现的蓝牙设备', res);
+          that.setData({
+            bleLists: res.devices
+          });
+          // console.log(that.data.bleLists);
+        }
+      })
+    }, 2000);
   },
 
   // 连接蓝牙
   connectBle: function (e) {
-    // console.log(e);
+    /**
+     * 6. 停止搜寻附近的蓝牙外围设备
+     * 这个后面在关闭小程序时调用
+     */
+    wx.stopBluetoothDevicesDiscovery({
+      success(res) {
+        console.log('停止搜寻附近的蓝牙外围设备', res);
+      }
+    })
     var that = this;
     that.setData({
       deviceId: e.currentTarget.dataset.id,
     });
-    console.log(this.data.deviceId);
+    console.log('选中的设备deviceId', this.data.deviceId);
     /**
-     * 监听蓝牙低功耗连接状态的改变事件。包括开发者主动连接或断开连接，设备丢失，连接异常断开等等
+     * 7.监听蓝牙低功耗连接状态的改变事件。包括开发者主动连接或断开连接，设备丢失，连接异常断开等等
      */
     wx.onBLEConnectionStateChange(function (res) {
       console.log(`device ${res.deviceId} state has changed, connected: ${res.connected}`)
     });
     /** 
-     * 连接蓝牙低功耗设备。若小程序在之前已有搜索过某个蓝牙设备，并成功建立连接，可直接传入之前搜索获取的 deviceId 直接尝试连接该设备，无需再次进行搜索操作。
+     * 8.连接蓝牙低功耗设备。若小程序在之前已有搜索过某个蓝牙设备，并成功建立连接，可直接传入之前搜索获取的 deviceId 直接尝试连接该设备，无需再次进行搜索操作。
      */
     wx.createBLEConnection({
       deviceId: that.data.deviceId,
-      success: function () {
+      success: function (res) {
+        console.log('连接蓝牙低功耗设备成功', res);
         /**
-         * 连接成功后开始获取设备的服务列表(service)。
+         * 9.连接成功后开始获取设备的服务列表(service)。
          */
         wx.getBLEDeviceServices({
           deviceId: that.data.deviceId,
           success: function (res) {
             // 回调结果中读取服务列表
+            console.log('获取设备的服务列uuid列表', res.services);
             that.setData({
               services: res.services
             });
-            console.log('device services:', that.data.services);
             // 选定一个服务UUID
             that.setData({
-              serviceId: that.data.services[1].uuid
+              serviceId: that.data.services[0].uuid
             });
-            console.log('marster services:', that.data.services[1].uuid);
+            console.log('选中的服务uuid', that.data.services[1].uuid);
             /**
              * 设定一个定时器。在定时到期以后执行注册的回调函数
              * 延迟3秒，根据服务获取特征 
@@ -193,7 +243,7 @@ Page({
             setTimeout(
               function () {
                 /**
-                 * 获取蓝牙低功耗设备某个服务中所有特征 (characteristic)。
+                 * 10.获取蓝牙低功耗设备某个服务中所有特征 (characteristic)。
                  */
                 wx.getBLEDeviceCharacteristics({
                   deviceId: that.data.deviceId,
@@ -205,7 +255,7 @@ Page({
                      * uuid	      string	蓝牙设备特征的 UUID
                      * properties	Object	该特征支持的操作类型
                      */
-                    console.log('device getBLEDeviceCharacteristics:', res.characteristics);
+                    console.log('获取当前服务uuid的特征uuid列表', res.characteristics);
                     for (var i = 0; i < res.characteristics.length; i++) {
                       if (res.characteristics[i].uuid.indexOf("cd04") != -1) {
                         that.setData({
@@ -215,7 +265,7 @@ Page({
                       }
                     }
                     /**
-                     * 启用蓝牙低功耗设备特征值变化时的 notify 功能，订阅特征。注意：必须设备的特征支持 notify 或者 indicate 才可以成功调用。
+                     * 11. 启用蓝牙低功耗设备特征值变化时的 notify 功能，订阅特征。注意：必须设备的特征支持 notify 或者 indicate 才可以成功调用。
                      * 顺序开发设备特征notifiy
                      */
                     wx.notifyBLECharacteristicValueChange({
@@ -226,15 +276,15 @@ Page({
                       characteristicId: that.data.cd04,
                       state: true,
                       success: function (res) {
-                        console.log('notifyBLECharacteristicValueChanged success', res)
+                        console.log('启用蓝牙低功耗设备特征值变化时的 notify 功能', res)
                       }
                     });
                     /**
-                     * 监听蓝牙低功耗设备的特征值变化事件。必须先调用 wx.notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
+                     * 12. 监听蓝牙低功耗设备的特征值变化事件。必须先调用 wx.notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
                      * 回调获取 设备发过来的数据
                      */
                     wx.onBLECharacteristicValueChange(function (characteristic) {
-                      console.log('characteristic value comed:', characteristic)
+                      console.log('监听蓝牙低功耗设备的特征值变化事件', characteristic)
                       /**
                        * 监听cd04中的结果
                        */
@@ -253,6 +303,13 @@ Page({
               1500);
           }
         })
+      },
+      fail: function (res) {
+        console.log('连接蓝牙低功耗设备失败', res.errMsg);
+        wx.showToast({
+          title: "连接失败",
+          duration: 2000
+        });
       }
     });
     // 隐藏蓝牙列表
@@ -289,7 +346,7 @@ Page({
 
   /**
    * 数据转hex
-   */ 
+   */
   buf2hex: function (buffer) { // buffer is an ArrayBuffer
     return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
   },
@@ -344,6 +401,61 @@ Page({
       extra: {
         lineStyle: 'Broken' //曲线
       },
+    });
+  },
+
+  /**
+   * 13.小程序切后台或销毁时
+   */
+  onHide: function (res) {
+    wx.closeBluetoothAdapter({
+      success: function (res) {
+        console.log("小程序切后台或销毁", res);
+      }
+    })
+  },
+
+  /**
+   * 14. 重新初始化蓝牙
+   */
+  onShow: function (res) {
+    /**
+     * 1.初始化蓝牙模块
+     * 其他蓝牙相关 API 必须在 wx.openBluetoothAdapter 调用之后使用。否则 API 会返回错误（errCode=10000）
+     * 如果设备已经打开蓝牙会报错：openBluetoothAdapter:fail already opened，但是不影响逻辑进success
+     */
+    wx.openBluetoothAdapter({
+      success: function (res) {
+        console.log('蓝牙适配器初始化成功', res.errMsg);
+      },
+      fail: function (res) {
+        console.log('蓝牙适配器初始化异常', res.errMsg);
+      }
+    });
+    /**
+     * 2. 获取本机蓝牙适配器状态
+     */
+    wx.getBluetoothAdapterState({
+      success: function (res) {
+        console.log('获取本机蓝牙适配器状态', res.errMsg);
+        wx.showToast({
+          title: "蓝牙已开启",
+          duration: 2000
+        });
+      },
+      fail: function (res) {
+        console.log('获取本机蓝牙适配器状态', res.errMsg);
+        wx.showToast({
+          title: "蓝牙状态异常",
+          duration: 2000
+        });
+      }
+    });
+    /**
+     *  3. 监听蓝牙适配器状态变化事件
+     */
+    wx.onBluetoothAdapterStateChange(function (res) {
+      console.log(`adapterState changed, now is`, res)
     });
   }
 })
