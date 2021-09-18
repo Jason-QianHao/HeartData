@@ -20,7 +20,14 @@ public interface WxUserMapping {
 	 * 这里不用返回用户所有信息，使用覆盖索引，提高效率
 	 */
 	@Select("select `id` from `wxusers` where `open_id`=#{openId}")
-	public int getId(@Param("openId") String openId);
+	public Integer getId(@Param("openId") String openId);
+	
+	/*
+	 * 根据微信用户openId查询用户
+	 * 这里不用返回用户所有信息，使用覆盖索引，提高效率
+	 */
+	@Select("select `id` from `wxusers` where `nick_name`=#{nickName}")
+	public Integer getNickName(@Param("nickName") String nickName);
 	
 	/*
 	 * 根据openId查询id

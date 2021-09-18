@@ -49,8 +49,8 @@ public class WxUserService {
 			return Constants.SUCCESSCODE;
 		}
 		try {
-			int pepoleid = wxUserMapping.getId(openId);
-			if(pepoleid == 0) {
+			Integer pepoleid = wxUserMapping.getId(openId);
+			if(pepoleid == null || pepoleid == 0) {
 				return Constants.SUCCESSCODE;
 			}else {
 				return String.valueOf(pepoleid);
@@ -58,6 +58,32 @@ public class WxUserService {
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.info("WxUserService/isNewWxUser", e);
+			return Constants.ERROR;
+		}
+	}
+	
+	/*
+	 * 功能：根据nickName判断是否是新用户
+	 * 返回：
+	 * 	1. 是新用户 Constants.SUCCESSCOD
+	 *  2. 已存在账号 pepoleid
+	 *  3. 查询错误 Constants.ERROR
+	 */
+	public String isNewWxUserByNickName(String nickName) {
+		// 注意这里null和""的判读不能写反了。
+		if(nickName == null || nickName.equals("")) {
+			return Constants.SUCCESSCODE;
+		}
+		try {
+			Integer pepoleid = wxUserMapping.getNickName(nickName);
+			if(pepoleid == null || pepoleid == 0) {
+				return Constants.SUCCESSCODE;
+			}else {
+				return String.valueOf(pepoleid);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("WxUserService/isNewWxUserByNickName 查询用户昵称错误", e);
 			return Constants.ERROR;
 		}
 	}

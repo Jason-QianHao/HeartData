@@ -1,5 +1,7 @@
 package com.qian.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,37 +36,49 @@ public class WxUserController extends BaseController{
 		// 得想办法从客户端获取用户唯一识别码，方能通过redis缓存用户登陆信息。
 		
 		// 请求微信接口
-		String params = "appid=" + APPID + "&secret=" + APPSECRET + "&js_code="
-				+ code + "&grant_type=authorization_code";//参数
-        String url = "https://api.weixin.qq.com/sns/jscode2session?"+params;// 微信接口 用于查询oponid
-        String response = restTemplate.getForObject(url,String.class);
-        JSONObject jsonObject = JSON.parseObject(response);
-        response = jsonObject.getString("openid");
-        log.info("UserController/wxLogin, 微信用户接口返回openid：" + response);
-        wxUserEntity.setOpenId(response);
-        // 是否是新添加用户
-        int pepoleid = 0;
-        String isNewWxUser = wxUserService.isNewWxUser(wxUserEntity.getOpenId());
+		/*
+		 * 20210918:
+		 * 	1.部署在Linux上后，由于没有设置相应防火墙导致访问微信网关失败
+		 *  2.由于网关api地址在不断变化，暂时不考虑将所有ip地址开启防火墙，故将openid改为uuid随机生成。
+		try {
+			String params = "appid=" + APPID + "&secret=" + APPSECRET + "&js_code="
+					+ code + "&grant_type=authorization_code";//参数
+	        String url = "https://api.weixin.qq.com/sns/jscode2session?"+params;// 微信接口 用于查询oponid
+	        String response = restTemplate.getForObject(url,String.class);
+	        JSONObject jsonObject = JSON.parseObject(response);
+	        response = jsonObject.getString("openid");
+	        log.info("UserController/wxLogin, 微信用户接口返回openid：" + response);
+	        wxUserEntity.setOpenId(response);
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("UserController/wxLogin, 请求微信网关失败", e);
+        	return Constants.ERROR;
+		}
+		*/
+		String resId = "";
+		// 根据nickName是否是新添加用户
+        String isNewWxUser = wxUserService.isNewWxUserByNickName(wxUserEntity.getNickName());
         if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
         	// 是新用户
+        	wxUserEntity.setOpenId(UUID.randomUUID().toString()); // 添加openid
             String addResult = wxUserService.addWxUser(wxUserEntity);
             if(!addResult.equals(Constants.FAILCODE)) {
             	// 添加成功
-            	log.info("UserController/wxLogin, 新用户添加成功");
-            	pepoleid = Integer.valueOf(addResult);
+            	log.info("WxUserController/wxLogin, 新用户添加成功");
+            	resId = addResult;
             }else {
             	// 添加失败
-            	log.info("UserController/wxLogin, 新用户注册失败");
+            	log.info("WxUserController/wxLogin, 新用户注册失败");
             	return Constants.ERROR;
             }
         }else if(isNewWxUser.equals(Constants.ERROR)) {
         	// 查询失败
-        	log.info("UserController/wxLogin, 用户信息查询失败");
+        	log.info("WxUserController/wxLogin, 用户信息查询失败");
         	return Constants.ERROR;
         }else {
-        	pepoleid = Integer.valueOf(isNewWxUser);
+        	resId = isNewWxUser;
         }
-        log.info("UserController/wxLogin, 登陆/注册成功返回peopleid");
-        return String.valueOf(pepoleid);
+        log.info("WxUserController/wxLogin, 登陆/注册成功返回peopleid");
+        return resId;
 	}
 }

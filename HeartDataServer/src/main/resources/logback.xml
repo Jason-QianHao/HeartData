@@ -3,7 +3,7 @@
 	<!-- 项目名称 -->
 	<property name="projectname" value="HeartData" />    
 	<!-- 日志存放路径 -->
-	<property name="log.path" value="/Users/qianhao/Jason/Software/Git/HeartData/logs" />    
+	<property name="log.path" value="/home/shark/Project/HeartData/logs/" />    
 	<!-- 日志输出格式 -->
 	<property name="log.pattern"
 		value="%d{yyy-MM-dd HH:mm:ss.SSS} [%X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] [%thread] %-5level %logger{20} - [%method,%line] - %msg%n" />   

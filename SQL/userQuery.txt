@@ -11,7 +11,7 @@ CREATE TABLE `users`  (
 
 CREATE TABLE `wxusers`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键（自增长）',
-	`open_id` varchar(32) NOT NULL COMMENT '小程序openid',
+	`open_id` varchar(100) NOT NULL COMMENT '小程序openid',
   `nick_name` varchar(50) NOT NULL COMMENT '用户名',
   `avatar_url` varchar(500) NOT NULL COMMENT '密码，加密存储',
   `gender` int(10) NULL DEFAULT NULL COMMENT '登录Id',
