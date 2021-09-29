@@ -40,6 +40,9 @@ public class WxUserController extends BaseController{
 		 * 20210918:
 		 * 	1.部署在Linux上后，由于没有设置相应防火墙导致访问微信网关失败
 		 *  2.由于网关api地址在不断变化，暂时不考虑将所有ip地址开启防火墙，故将openid改为uuid随机生成。
+		 * 20210929:
+		 *  部署在8080端口后，上述现象没有发生了
+		*/
 		try {
 			String params = "appid=" + APPID + "&secret=" + APPSECRET + "&js_code="
 					+ code + "&grant_type=authorization_code";//参数
@@ -47,20 +50,18 @@ public class WxUserController extends BaseController{
 	        String response = restTemplate.getForObject(url,String.class);
 	        JSONObject jsonObject = JSON.parseObject(response);
 	        response = jsonObject.getString("openid");
-	        log.info("UserController/wxLogin, 微信用户接口返回openid：" + response);
+	        log.info("WxUserController/wxLogin, 微信用户接口返回openid：" + response);
 	        wxUserEntity.setOpenId(response);
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("UserController/wxLogin, 请求微信网关失败", e);
+			log.info("WxUserController/wxLogin, 请求微信网关失败", e);
         	return Constants.ERROR;
 		}
-		*/
 		String resId = "";
 		// 根据nickName是否是新添加用户
-        String isNewWxUser = wxUserService.isNewWxUserByNickName(wxUserEntity.getNickName());
+        String isNewWxUser = wxUserService.isNewWxUser(wxUserEntity.getOpenId());
         if(isNewWxUser.equals(Constants.SUCCESSCODE)) {
         	// 是新用户
-        	wxUserEntity.setOpenId(UUID.randomUUID().toString()); // 添加openid
             String addResult = wxUserService.addWxUser(wxUserEntity);
             if(!addResult.equals(Constants.FAILCODE)) {
             	// 添加成功

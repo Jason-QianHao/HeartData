@@ -18,6 +18,8 @@ App({
     //openid: "", // 之前用作测试，后面openid不传到小程序端
     pepoleid: "",
     filepath: "",
+    // domain: "114.212.133.214:8080"
+    // domain: "114.212.129.144:8080"
     domain: "http://3a40r96515.zicp.vip"
   }
 })

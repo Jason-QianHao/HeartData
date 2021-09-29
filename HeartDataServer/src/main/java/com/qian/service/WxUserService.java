@@ -57,7 +57,7 @@ public class WxUserService {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.info("WxUserService/isNewWxUser", e);
+			log.info("WxUserService/isNewWxUser 查询用户openid错误", e);
 			return Constants.ERROR;
 		}
 	}
