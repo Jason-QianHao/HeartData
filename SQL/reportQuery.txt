@@ -27,6 +27,7 @@ insert into `month_report` values(null, 2021, 07, '/static/imgs/reports/riqi7.pn
 insert into `month_report` values(null, 2021, 08, '/static/imgs/reports/riqi8.png', '08月报告', '08月报告，良好', '8.3', '1');
 select * from `month_report`;
 TRUNCATE table `month_report`;
+insert into `month_report` values(null, 2021, 10, '/static/imgs/reports/riqi10.png', '10月报告', '10月报告，良好', '8.3', '1');
 
 select * from `month_report` WHERE y=2021 ORDER BY m limit 2;
 select id from  `month_report` WHERE y=2021 and m=1;
@@ -49,6 +50,7 @@ CREATE TABLE `day_report`  (
 
 drop table `day_report`;
 select * from `day_report`;
+TRUNCATE TABLE `day_report`;
 insert into `day_report` values(null, 2021, 08, 01, '/static/imgs/reports/riqi1.png', 1, 9.9, 1);
 insert into `day_report` values(null, 2021, 08, 02, '/static/imgs/reports/riqi2.png', 1, 9.9, 1);
 insert into `day_report` values(null, 2021, 08, 03, '/static/imgs/reports/riqi3.png', 1, 9.9, 1);

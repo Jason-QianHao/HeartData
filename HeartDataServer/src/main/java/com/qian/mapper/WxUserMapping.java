@@ -1,5 +1,7 @@
 package com.qian.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -34,4 +36,10 @@ public interface WxUserMapping {
 	 */
 	@Select("select `id` from `wxusers` where `open_id`=#{openId}")
 	public int getIdByOpenId(String openId);
+	
+	/*
+	 * 查询所有用户的openid
+	 */
+	@Select("select id from `wxusers`")
+	public List<Integer> getAllId();
 }

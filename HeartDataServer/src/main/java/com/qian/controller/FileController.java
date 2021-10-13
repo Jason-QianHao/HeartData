@@ -45,4 +45,20 @@ public class FileController extends BaseController{
 		String res = fileService.saveData(req, onedata, pepoleid, filepath);
 		return res;
 	}
+	
+	/**
+	 * 测试通过本地磁盘生成报告
+	 */
+	@RequestMapping("/generateReport")
+	public String generateReport() {
+		try {
+			fileService.generateReport();
+			log.info("FileController/generateReport, 生成报告中");
+			return "生成报告中";
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("FileController/generateReport, 生成报告失败");
+			return "生成报告失败";
+		}
+	}
 }

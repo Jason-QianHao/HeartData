@@ -34,7 +34,7 @@ public class FileReport {
 	private int y;
 	private int m;
 	private int d;
-	private int avgBeat;
+	private float avgBeat;
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")//首先设定日期时间格式,HH指使用24小时制,hh是使用12小时制
 	private Timestamp startTime;
 	@JSONField(format="yyyy-MM-dd HH:mm:ss")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.qian.Entity.algorithm.MonthReport;
 
@@ -13,7 +14,7 @@ public interface MonthReportMapping {
 	/*
 	 * 插入一个月份报告
 	 */
-	@Insert("insert into `month_report` values(#{y}, #{m}, #{imgurl}, #{title}, #{description}, #{healthIndex},"
+	@Insert("insert into `month_report` values(null, #{y}, #{m}, #{imgurl}, #{title}, #{description}, #{healthIndex},"
 			+ "#{pepoleId})")
 	public void insertMonthReport(MonthReport monthReport);
 	
@@ -47,4 +48,10 @@ public interface MonthReportMapping {
 	 */
 	@Select("select * from `month_report` WHERE `y`=#{y} and `m`=#{m} and `pepole_id`=#{pepoleId}")
 	public MonthReport getMonthReportByYearAndMonth(@Param("y") int year, @Param("m") int month, @Param("pepoleId") int pepoleId);
+	
+	/*
+	 * 修改月健康指数
+	 */
+	@Update("update `month_report` set health_index=#{avg} where `y`=#{y} and `m`=#{m} and `pepole_id`=#{pepoleId}")
+	public void updateMonthHealthIndex(@Param("avg")float avg, @Param("y") int year, @Param("m") int month, @Param("pepoleId") int pepoleId);
 }

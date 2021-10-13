@@ -13,7 +13,7 @@ public interface DayReportMapping {
 	/*
 	 * 插入一个记录
 	 */
-	@Insert("insert into `day_report` values(#{y}, #{m}, #{d}, #{imgurl}, #{isUsed}, #{healthIndex},"
+	@Insert("insert into `day_report` values(null, #{y}, #{m}, #{d}, #{imgurl}, #{isUsed}, #{healthIndex},"
 			+ "#{pepoleId})")
 	public void insertDayReport(DayReport dayReport);
 	

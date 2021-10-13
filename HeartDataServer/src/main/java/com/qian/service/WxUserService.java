@@ -1,5 +1,7 @@
 package com.qian.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,6 +102,21 @@ public class WxUserService {
 			// TODO: handle exception
 			log.info("WxUserService/getId, 查询ID失败", e);
 			return -1;
+		}
+	}
+	
+	/*
+	 * 获取数据库中所有的pepoleId
+	 */
+	public List<Integer> getAllId(){
+		try {
+			List<Integer> allId = wxUserMapping.getAllId();
+			log.info("WxUserService/getAllId, 查询所有用户id成功");
+			return allId;
+		} catch (Exception e) {
+			// TODO: handle exception
+			log.info("WxUserService/getAllId, 查询所有用户id失败", e);
+			return null;
 		}
 	}
 }

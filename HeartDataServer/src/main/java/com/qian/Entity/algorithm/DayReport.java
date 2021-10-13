@@ -33,7 +33,7 @@ public class DayReport {
 	private String imgurl;
 	// 1 true 0 false
 	private boolean isUsed;
-	private int healthIndex;
+	private float healthIndex;
 	private int pepoleId;
 	private List<FileReport> fileReportLists;
 }

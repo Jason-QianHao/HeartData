@@ -1486,6 +1486,219 @@ public interface DayReportMapping {
    小程序中点击2021年8月15日报告后显示：
 
    <img src="./img/image-20210818172611268.png" alt="image-20210818172611268" style="zoom:50%;" />
+
+## 数据分析和自动报告生成
+
+### 数据分析
+
+### 自动报告生成
+
+#### 设计
+
+- 数据分析和处理
+
+​	采用子线程的方式进行数据的分析和处理
+
+```java
+	public void generateReport() {
+		/**
+		 * 遍历file_info数据库，搜素当天新添的所有文件
+		 */
+		// 1. 获取当前时间
+		String time = TimeUtil.getCurrentTime();
+		String[] strs = time.split(" ");// yy-mm-dd hh_mm_ss
+		String[] ymd = strs[0].split("-"); // yy mm dd
+		String[] hours = strs[1].split(":"); // hh mm ss
+		// 查询当天文件
+		List<FileEntity> filesListByYMD = fileMapping.getFilesListByYMD(ymd[0], ymd[1], ymd[2]);
+		log.info("FileService/generateReport, 查询当天新添报告成功 {}", filesListByYMD);
+		Runnable reportRunable = new ReportRunable(filesListByYMD, fileReportMapping, dayReportMapping,
+				monthReportMapping, wxUserService);
+		threadPoolExecutor.submit(reportRunable);
+		log.info("生成报告中。。");
+	}
+```
+
+- 子线程
+
+```java
+public void run() {
+		// TODO Auto-generated method stub
+		// 遍历filesToday列表，插入file_report数据库表
+		Map<Integer, List<FileReport>> map = new HashMap<Integer, List<FileReport>>();
+		int[] ymd = new int[3];
+		for (FileEntity f : this.filesToday) {
+			// 封装fileReport
+			FileReport fileReport = new FileReport();
+			fileReport.setY(Integer.valueOf(f.getYear()));
+			fileReport.setM(Integer.valueOf(f.getMonth()));
+			fileReport.setD(Integer.valueOf(f.getDay()));
+			ymd[0] = fileReport.getY();
+			ymd[1] = fileReport.getM();
+			ymd[2] = fileReport.getD();
+			fileReport.setStartTime(f.getClientCreated());
+			fileReport.setEndTime(f.getServerCreated());
+			fileReport.setPepoleId(f.getPepoleId());
+			// 读取磁盘文件，计算平均心率
+			// try {
+			fileReport.setAvgBeat(calAvgHeart(f.getFileUrl()));
+			// } catch (Exception e) {
+			// // TODO: handle exception
+			// // 若文件不存在或读取失败，则直接赋值为-1进行报错提示。
+			// fileReport.setAvgBeat(-1);
+			// log.info("ReportRunable/run, 读取文件失败", e);
+			// }
+			// try {
+			fileReportMapping.insert(fileReport);
+			log.info("ReportRunable/run, 插入fileReport成功");
+			// } catch (Exception e) {
+			// // TODO: handle exception
+			// log.info("ReportRunable/run, 插入fileReport失败", e);
+			// }
+			if (!map.containsKey(f.getPepoleId())) {
+				map.put(f.getPepoleId(), new ArrayList<FileReport>());
+			}
+			map.get(f.getPepoleId()).add(fileReport);
+		}
+		// 获取数据库所有人的id
+		List<Integer> allPepoleId = wxUserService.getAllId();
+		// 日报告生成和修改..
+		for (Integer pid : allPepoleId) {
+			DayReport dayReport = new DayReport();
+			dayReport.setY(ymd[0]);
+			dayReport.setM(ymd[1]);
+			dayReport.setD(ymd[2]);
+			dayReport.setImgurl("/static/imgs/reports/riqi" + ymd[2] + ".png");
+			dayReport.setPepoleId(pid);
+			if (!map.containsKey(pid)) {
+				// 今天没有新增
+				dayReport.setUsed(false);
+				dayReport.setHealthIndex(0);
+			} else {
+				// 今天新增
+				dayReport.setUsed(true);
+				// 计算平均心率
+				float dayAvg = 0;
+				for (FileReport fr : map.get(pid)) {
+					if (fr.getAvgBeat() == -1) {
+						dayAvg = -1;
+						break;
+					}
+					dayAvg += fr.getAvgBeat();
+				}
+				if (dayAvg != -1) {
+					dayReport.setHealthIndex(dayAvg / map.get(pid).size());
+				}
+			}
+			// try {
+			dayReportMapping.insertDayReport(dayReport);
+			log.info("ReportRunable/run, 插入dayReport成功");
+			// } catch (Exception e) {
+			// // TODO: handle exception
+			// log.info("ReportRunable/run, 插入dayReport失败", e);
+			// }
+		}
+		// 月报告生成和修改
+		// try {
+		for (Integer pid : allPepoleId) {
+			// 查询本月每天的记录
+			List<DayReport> allDayReportByYearAndMonth = dayReportMapping.getAllDayReportByYearAndMonth(ymd[0], ymd[1],
+					pid);
+			// 计算平均心率
+			float monthAvg = 0;
+			int len = 0;
+			for (DayReport dr : allDayReportByYearAndMonth) {
+				if (dr.isUsed()) {
+					if (dr.getHealthIndex() == -1) {
+						monthAvg = -1;
+						break;
+					}
+				}
+				monthAvg += dr.getHealthIndex();
+				len = len + 1;
+			}
+			if (monthAvg != -1) {
+				monthAvg = monthAvg / len;
+			}
+			if (ymd[2] == 1) {
+				// 今天是新的1个月，需要进行新增月报告
+				MonthReport monthReport = new MonthReport();
+				monthReport.setY(ymd[0]);
+				monthReport.setM(ymd[1]);
+				monthReport.setImgurl("/static/imgs/reports/riqi" + ymd[1] + ".png");
+				monthReport.setTitle(ymd[1] + "月报告");
+				monthReport.setDescription("良好");
+				monthReport.setPepoleId(pid);
+				monthReport.setHealthIndex(monthAvg);
+				monthReportMapping.insertMonthReport(monthReport);
+				log.info("ReportRunable/run, 插入monthReport成功");
+			} else {
+				// 本月月报告已经存在，需要进行修改
+				monthReportMapping.updateMonthHealthIndex(monthAvg, ymd[0], ymd[1], pid);
+				log.info("ReportRunable/run, 修改monthReport成功");
+			}
+		}
+		// } catch (Exception e) {
+		// // TODO: handle exception
+		// log.info("ReportRunable/run, 插入monthReport失败", e);
+		// }
+	}
+```
+
+#### 定时设计
+
+​	使用springboot自带的`@Scheduled`注解即可。
+
+​	暂定每天22:00:00进行当天数据的分析和报告的生成。
+
+```java
+@Scheduled(cron="0 0 22 * * ?")
+```
+
+#### 测试
+
+1. 原数据库表
+
+   - 月报告表
+
+   ![image-20211013155430459](./img/image-20211013155430459.png)
+
+   - 日报告表
+
+   ![image-20211013155545249](./img/image-20211013155545249.png)
+
+   - 文件报告表
+
+     ![image-20211013155623124](./img/image-20211013155623124.png)
+
+2.  测试
+
+   本地磁盘中已经存储了今天的2个测试数据如图。
+
+   ![image-20211013155741074](./img/image-20211013155741074.png)
+
+   访问api进行测试：
+
+   ![image-20211013155817580](./img/image-20211013155817580.png)
+
+   ![image-20211013155934437](./img/image-20211013155934437.png)
+
+   运行后结果正确，如下：
+
+   - 文件报告表
+
+     ![image-20211013160159706](./img/image-20211013160159706.png)
+
+   - 日报告表
+
+     ![image-20211013160223217](./img/image-20211013160223217.png)
+
+   - 月报告表
+
+     ![image-20211013160243857](./img/image-20211013160243857.png)
+
+   数据插入和修改完全正常，后续需要注意对子线程中异常回滚的事务情况。
+
 # Linux服务器部署
 
 分为JDK部署、MySQL数据库部署、后台运行jar包项目
@@ -1643,6 +1856,7 @@ centos环境自带jdk1.8.0版本，为了与其他用户环境一致，暂时不
 8. 小程序动态显示波形(☑️)
 9. 从文件中生成报告的算法
 10. 小程序和服务器接口的openid改为peopleid(☑️)
+11. 自动报告生成的异常回滚
 
 # 开发笔记
 

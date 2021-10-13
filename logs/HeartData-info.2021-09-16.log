@@ -1,0 +1,13 @@
+2021-09-02 15:29:30.887 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp v0.0.1-SNAPSHOT on 192.168.0.100 with PID 28330 (/Users/qianhao/Jason/Software/Git/HeartData/test/HeartData-reportAndDatatransport-v0.1.jar started by qianhao in /Users/qianhao)
+2021-09-02 15:29:30.901 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-09-02 15:29:31.454 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-09-02 15:29:32.741 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-09-02 15:29:32.743 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-09-02 15:29:32.859 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-09-02 15:29:34.525 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-80"]
+2021-09-02 15:29:34.538 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-80]
+2021-09-02 15:29:34.570 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-09-02 15:29:34.599 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 4.251 seconds (JVM running for 5.256)
+2021-09-02 15:30:55.259 [,] [http-nio-80-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-09-02 15:30:56.297 [,] [http-nio-80-exec-1] INFO  c.q.c.WxUserController - [wxLogin,43] - UserController/wxLogin, 微信用户接口返回openid：otqoY47Fx98BL1vPWOh_03tRZfJI
+2021-09-02 15:30:56.931 [,] [http-nio-80-exec-1] INFO  c.q.c.WxUserController - [wxLogin,67] - UserController/wxLogin, 登陆/注册成功返回peopleid

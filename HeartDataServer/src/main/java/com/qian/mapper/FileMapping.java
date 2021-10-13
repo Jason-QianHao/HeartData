@@ -20,8 +20,12 @@ public interface FileMapping {
 			+ ", #{pepoleId}, #{clientCreated});")
 	public void addFile(FileEntity fileEntity);
 	
-	
-	
+	/*
+	 * 根据时间ymd查找所有新增的记录
+	 */
+	@Select("select * from `file_info` where year=#{year} and month=#{month} and day=#{day}")
+	public List<FileEntity> getFilesListByYMD(@Param("year")String year, @Param("month")String month, 
+			@Param("day")String day);
 	
 	
 	/*

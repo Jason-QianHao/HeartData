@@ -1,13 +1,511 @@
-2021-09-02 15:29:30.887 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp v0.0.1-SNAPSHOT on 192.168.0.100 with PID 28330 (/Users/qianhao/Jason/Software/Git/HeartData/test/HeartData-reportAndDatatransport-v0.1.jar started by qianhao in /Users/qianhao)
-2021-09-02 15:29:30.901 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
-2021-09-02 15:29:31.454 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
-2021-09-02 15:29:32.741 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
-2021-09-02 15:29:32.743 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
-2021-09-02 15:29:32.859 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
-2021-09-02 15:29:34.525 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-80"]
-2021-09-02 15:29:34.538 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-80]
-2021-09-02 15:29:34.570 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
-2021-09-02 15:29:34.599 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 4.251 seconds (JVM running for 5.256)
-2021-09-02 15:30:55.259 [,] [http-nio-80-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
-2021-09-02 15:30:56.297 [,] [http-nio-80-exec-1] INFO  c.q.c.WxUserController - [wxLogin,43] - UserController/wxLogin, 微信用户接口返回openid：otqoY47Fx98BL1vPWOh_03tRZfJI
-2021-09-02 15:30:56.931 [,] [http-nio-80-exec-1] INFO  c.q.c.WxUserController - [wxLogin,67] - UserController/wxLogin, 登陆/注册成功返回peopleid
+2021-10-13 11:34:20.951 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 11228 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:34:20.962 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:34:21.152 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:34:21.839 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:34:21.840 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:34:21.896 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:34:22.691 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:34:22.698 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:34:22.771 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:34:22.784 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.027 seconds (JVM running for 2.355)
+2021-10-13 11:35:49.845 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:35:49.911 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [isExist,183] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13
+2021-10-13 11:35:49.911 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:36:23.515 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:36:28.786 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:36:32.138 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:36:35.419 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:37:06.059 [,] [http-nio-8080-exec-8] INFO  c.q.s.FileService - [isExist,183] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13/1/2021/10/13
+2021-10-13 11:37:06.059 [,] [http-nio-8080-exec-8] INFO  c.q.s.FileService - [saveData,130] - FileService/saveData, 插入数据库失败
+2021-10-13 11:40:39.463 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 3596 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:40:39.465 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:40:39.671 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:40:40.353 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:40:40.353 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:40:40.413 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:40:41.212 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:40:41.219 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:40:41.286 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:40:41.300 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.029 seconds (JVM running for 2.346)
+2021-10-13 11:40:59.110 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:40:59.145 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:41:22.924 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:41:29.058 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:41:33.561 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:41:36.286 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:41:42.636 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [isExist,182] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13/1/2021/10/13
+2021-10-13 11:41:42.636 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,130] - FileService/saveData, 插入数据库失败
+2021-10-13 11:42:12.970 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 2796 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:42:12.972 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:42:13.174 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:42:13.882 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:42:13.883 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:42:13.943 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:42:14.747 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:42:14.754 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:42:14.830 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:42:14.859 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.079 seconds (JVM running for 2.392)
+2021-10-13 11:42:38.961 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:42:38.996 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:42:52.099 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:42:54.818 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:42:58.395 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:43:02.002 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,137] - FileService/saveData, 写入文件成功
+2021-10-13 11:43:04.905 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [isExist,182] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13/1/2021/10/13
+2021-10-13 11:43:04.907 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,130] - FileService/saveData, 插入数据库失败
+java.lang.NumberFormatException: For input string: "F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13/1"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at com.qian.service.FileService.addFileInfo(FileService.java:170)
+	at com.qian.service.FileService.saveData(FileService.java:120)
+	at com.qian.service.FileService$$FastClassBySpringCGLIB$$1e84064.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:652)
+	at com.qian.service.FileService$$EnhancerBySpringCGLIB$$2d0342a1.saveData(<generated>)
+	at com.qian.controller.FileController.recieveData(FileController.java:45)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:133)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:861)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:622)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:729)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:230)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:474)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:349)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:783)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:798)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1434)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 11:48:51.355 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 1700 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:48:51.357 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:48:51.561 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:48:52.264 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:48:52.266 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:48:52.330 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:48:53.222 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:48:53.228 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:48:53.301 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:48:53.314 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.156 seconds (JVM running for 2.468)
+2021-10-13 11:53:14.065 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:53:14.101 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:54:20.036 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:54:27.390 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:54:32.037 [,] [http-nio-8080-exec-7] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:54:35.017 [,] [http-nio-8080-exec-8] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:54:40.550 [,] [http-nio-8080-exec-9] INFO  c.q.s.FileService - [isExist,183] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13/1/2021/10/13
+2021-10-13 11:54:40.551 [,] [http-nio-8080-exec-9] INFO  c.q.s.FileService - [saveData,131] - FileService/saveData, 插入数据库失败
+java.lang.NumberFormatException: For input string: "1/2021/10/13/1"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.valueOf(Integer.java:766)
+	at com.qian.service.FileService.addFileInfo(FileService.java:171)
+	at com.qian.service.FileService.saveData(FileService.java:121)
+	at com.qian.service.FileService$$FastClassBySpringCGLIB$$1e84064.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:652)
+	at com.qian.service.FileService$$EnhancerBySpringCGLIB$$acaf69a3.saveData(<generated>)
+	at com.qian.controller.FileController.recieveData(FileController.java:45)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:133)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:116)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:827)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:738)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:897)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:970)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:861)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:622)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:846)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:729)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:230)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:105)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:81)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:192)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:165)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:198)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:474)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:349)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:783)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:798)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1434)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 11:55:11.615 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 11992 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:55:11.622 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:55:11.860 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:55:12.754 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:55:12.756 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:55:12.830 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:55:18.275 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:55:18.350 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:55:18.362 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:55:18.381 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 7.002 seconds (JVM running for 7.593)
+2021-10-13 11:56:01.519 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:56:05.919 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:56:57.134 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 5416 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:56:57.136 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:56:57.373 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:56:58.098 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:56:58.099 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:56:58.167 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:56:59.017 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:56:59.024 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:56:59.098 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:56:59.112 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.176 seconds (JVM running for 2.498)
+2021-10-13 11:57:03.722 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 10372 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:57:03.726 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:57:03.978 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:57:04.908 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:57:04.909 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:57:04.971 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:57:06.258 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:57:06.326 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:57:06.338 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:57:06.353 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.858 seconds (JVM running for 3.291)
+2021-10-13 11:57:09.877 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:57:09.921 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [isExist,183] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13
+2021-10-13 11:57:09.922 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 11:59:31.310 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 8776 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 11:59:31.314 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 11:59:31.569 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 11:59:32.519 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 11:59:32.520 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 11:59:32.594 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 11:59:33.857 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 11:59:33.933 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 11:59:33.944 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 11:59:33.964 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.887 seconds (JVM running for 3.621)
+2021-10-13 11:59:57.565 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 11:59:57.618 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [isExist,184] - FileService/isExist, 创建文件夹: F:/HeartData/WorkSpace/HeartData/test/heartFils/1/2021/10/13
+2021-10-13 11:59:57.619 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:00:20.317 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,128] - FileService/saveData, 插入数据库成功
+2021-10-13 12:01:08.179 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 11356 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 12:01:08.181 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 12:01:08.401 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 12:01:09.160 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 12:01:09.161 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 12:01:09.232 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 12:01:10.082 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 12:01:10.089 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 12:01:10.151 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 12:01:10.165 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.188 seconds (JVM running for 2.504)
+2021-10-13 12:01:40.198 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 12:01:40.232 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:01:49.571 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:01:53.340 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:01:56.411 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:01:59.673 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:02:05.454 [,] [http-nio-8080-exec-7] INFO  c.q.s.FileService - [saveData,128] - FileService/saveData, 插入数据库成功
+2021-10-13 12:43:41.226 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 8312 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 12:43:41.228 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 12:43:41.449 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 12:43:42.181 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 12:43:42.182 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 12:43:42.246 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 12:43:43.136 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 12:43:43.143 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 12:43:43.220 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 12:43:43.231 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.203 seconds (JVM running for 2.528)
+2021-10-13 12:44:19.039 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 12:44:19.074 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:44:26.166 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:44:29.825 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:44:33.386 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:44:36.730 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,138] - FileService/saveData, 写入文件成功
+2021-10-13 12:44:41.095 [,] [http-nio-8080-exec-7] INFO  c.q.s.FileService - [saveData,128] - FileService/saveData, 插入数据库成功
+2021-10-13 15:00:57.438 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 5484 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:00:57.441 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:00:57.701 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:00:58.562 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:00:58.563 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:00:58.637 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:00:59.963 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:01:00.036 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:01:00.048 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:01:00.064 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.85 seconds (JVM running for 3.29)
+2021-10-13 15:01:43.571 [,] [http-nio-8080-exec-3] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:01:44.062 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [generateReport,202] - FileService/generateReport, 查询当天新添报告成功 []
+2021-10-13 15:03:23.113 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 5536 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:03:23.118 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:03:23.368 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:03:24.225 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:03:24.227 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:03:24.297 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:03:25.602 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:03:25.695 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:03:25.706 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:03:25.725 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.837 seconds (JVM running for 3.233)
+2021-10-13 15:03:29.160 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:03:29.631 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,202] - FileService/generateReport, 查询当天新添报告成功 []
+2021-10-13 15:04:24.603 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 3932 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:04:24.607 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:04:24.848 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:04:25.749 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:04:25.750 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:04:25.815 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:04:27.145 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:04:27.153 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:04:27.163 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:04:27.183 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.805 seconds (JVM running for 3.198)
+2021-10-13 15:04:30.885 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:04:31.363 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,202] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@73321e0c, com.qian.Entity.FileEntity@1408f262]
+2021-10-13 15:04:38.161 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,206] - 生成报告中。。
+2021-10-13 15:04:38.162 [,] [http-nio-8080-exec-2] INFO  c.q.c.FileController - [generateReport,55] - FileController/generateReport, 生成报告中
+2021-10-13 15:04:51.323 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,69] - ReportRunable/run, 读取文件失败
+java.io.FileNotFoundException: F:\HeartData\WorkSpace\HeartData\test\heartFils\1\2021\10\13\1\2021\10\13\1_2021-10-13_12_01_40_.txt (系统找不到指定的路径。)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	at java.io.FileReader.<init>(FileReader.java:58)
+	at com.qian.algorithm.ReportRunable.calAvgHeart(ReportRunable.java:175)
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:04:51.323 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,76] - ReportRunable/run, 插入fileReport失败
+java.lang.NullPointerException: null
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:72)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:04:51.324 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,69] - ReportRunable/run, 读取文件失败
+java.io.FileNotFoundException: F:\HeartData\WorkSpace\HeartData\test\heartFils\1\2021\10\13\1\2021\10\13\1_2021-10-13_12_44_19_.txt (系统找不到指定的路径。)
+	at java.io.FileInputStream.open0(Native Method)
+	at java.io.FileInputStream.open(FileInputStream.java:195)
+	at java.io.FileInputStream.<init>(FileInputStream.java:138)
+	at java.io.FileInputStream.<init>(FileInputStream.java:93)
+	at java.io.FileReader.<init>(FileReader.java:58)
+	at com.qian.algorithm.ReportRunable.calAvgHeart(ReportRunable.java:175)
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:04:51.324 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,76] - ReportRunable/run, 插入fileReport失败
+java.lang.NullPointerException: null
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:72)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:14:43.663 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 8020 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:14:43.665 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:14:43.888 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:14:44.592 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:14:44.593 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:14:44.651 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:14:45.587 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:14:45.595 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:14:45.670 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:14:45.683 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.217 seconds (JVM running for 2.558)
+2021-10-13 15:15:03.769 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:15:03.803 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:14.138 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:17.100 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:19.505 [,] [http-nio-8080-exec-5] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:22.592 [,] [http-nio-8080-exec-6] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:27.333 [,] [http-nio-8080-exec-7] INFO  c.q.s.FileService - [saveData,125] - FileService/saveData, 插入数据库成功
+2021-10-13 15:15:41.779 [,] [http-nio-8080-exec-8] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:52.234 [,] [http-nio-8080-exec-9] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:55.041 [,] [http-nio-8080-exec-10] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:15:57.768 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:16:06.407 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [saveData,135] - FileService/saveData, 写入文件成功
+2021-10-13 15:16:10.491 [,] [http-nio-8080-exec-3] INFO  c.q.s.FileService - [saveData,125] - FileService/saveData, 插入数据库成功
+2021-10-13 15:16:30.265 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [generateReport,204] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@62fd03d3, com.qian.Entity.FileEntity@414da9d0]
+2021-10-13 15:16:30.266 [,] [http-nio-8080-exec-4] INFO  c.q.s.FileService - [generateReport,208] - 生成报告中。。
+2021-10-13 15:16:30.266 [,] [http-nio-8080-exec-4] INFO  c.q.c.FileController - [generateReport,55] - FileController/generateReport, 生成报告中
+2021-10-13 15:16:30.267 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,183] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:16:30.268 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,76] - ReportRunable/run, 插入fileReport失败
+java.lang.NullPointerException: null
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:72)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:16:30.272 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,183] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:16:30.272 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,76] - ReportRunable/run, 插入fileReport失败
+java.lang.NullPointerException: null
+	at com.qian.algorithm.ReportRunable.run(ReportRunable.java:72)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:748)
+2021-10-13 15:17:49.767 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 12236 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:17:49.771 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:17:50.012 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:17:50.896 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:17:50.898 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:17:50.983 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:17:52.303 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:17:52.312 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:17:52.322 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:17:52.341 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.798 seconds (JVM running for 3.192)
+2021-10-13 15:17:59.100 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:17:59.580 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,204] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@78b42bcf, com.qian.Entity.FileEntity@47a466fe]
+2021-10-13 15:18:15.048 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,208] - 生成报告中。。
+2021-10-13 15:18:15.048 [,] [http-nio-8080-exec-2] INFO  c.q.c.FileController - [generateReport,55] - FileController/generateReport, 生成报告中
+2021-10-13 15:18:54.776 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,183] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:26:55.900 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 11720 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:26:55.902 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:26:56.115 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:26:56.881 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:26:56.882 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:26:56.943 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:26:57.843 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:26:57.850 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:26:57.914 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:26:57.926 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.222 seconds (JVM running for 2.54)
+2021-10-13 15:27:00.456 [,] [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:27:00.941 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,210] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@cff6a90, com.qian.Entity.FileEntity@7e2dd710]
+2021-10-13 15:27:00.942 [,] [http-nio-8080-exec-2] INFO  c.q.s.FileService - [generateReport,215] - 生成报告中。。
+2021-10-13 15:27:00.943 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,187] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:27:00.943 [,] [http-nio-8080-exec-2] INFO  c.q.c.FileController - [generateReport,55] - FileController/generateReport, 生成报告中
+2021-10-13 15:27:00.955 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,77] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:27:00.955 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,187] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:27:00.961 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,77] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:43:25.497 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 7708 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:43:25.500 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:43:25.746 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:43:26.704 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:43:26.705 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:43:26.773 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:43:28.037 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:43:28.120 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:43:28.131 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:43:28.148 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.879 seconds (JVM running for 3.274)
+2021-10-13 15:43:33.834 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:43:34.363 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,210] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@53e0501e, com.qian.Entity.FileEntity@4a40c05b]
+2021-10-13 15:43:34.367 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,214] - 生成报告中。。
+2021-10-13 15:43:34.368 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,189] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:43:34.372 [,] [http-nio-8080-exec-1] INFO  c.q.c.FileController - [generateReport,56] - FileController/generateReport, 生成报告中
+2021-10-13 15:43:34.375 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:43:34.376 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,189] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:43:34.381 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:43:39.266 [,] [pool-1-thread-1] INFO  c.q.s.WxUserService - [getAllId,114] - WxUserService/getAllId, 查询所有用户id成功
+2021-10-13 15:47:21.776 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 9072 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:47:21.778 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:47:21.987 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:47:22.720 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:47:22.722 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:47:22.789 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:47:23.632 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:47:23.641 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:47:23.704 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:47:23.720 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.14 seconds (JVM running for 2.456)
+2021-10-13 15:47:41.406 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:47:41.858 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,210] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@10fcc0bb, com.qian.Entity.FileEntity@7a26be9a]
+2021-10-13 15:47:41.859 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,214] - 生成报告中。。
+2021-10-13 15:47:41.859 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,189] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:47:41.874 [,] [http-nio-8080-exec-1] INFO  c.q.c.FileController - [generateReport,56] - FileController/generateReport, 生成报告中
+2021-10-13 15:47:41.879 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:47:41.879 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,189] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:47:41.882 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:47:41.884 [,] [pool-1-thread-1] INFO  c.q.s.WxUserService - [getAllId,114] - WxUserService/getAllId, 查询所有用户id成功
+2021-10-13 15:47:41.889 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,120] - ReportRunable/run, 插入dayReport成功
+2021-10-13 15:47:41.895 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,164] - ReportRunable/run, 插入monthReport成功
+2021-10-13 15:59:02.287 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 7404 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 15:59:02.289 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 15:59:02.510 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 15:59:03.240 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 15:59:03.241 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 15:59:03.315 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 15:59:04.189 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 15:59:04.196 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 15:59:04.266 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 15:59:04.277 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.19 seconds (JVM running for 2.507)
+2021-10-13 15:59:09.592 [,] [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2021-10-13 15:59:10.027 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,210] - FileService/generateReport, 查询当天新添报告成功 [com.qian.Entity.FileEntity@f6c079b, com.qian.Entity.FileEntity@75a1ba9b]
+2021-10-13 15:59:10.029 [,] [http-nio-8080-exec-1] INFO  c.q.s.FileService - [generateReport,214] - 生成报告中。。
+2021-10-13 15:59:10.029 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,191] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:59:10.032 [,] [http-nio-8080-exec-1] INFO  c.q.c.FileController - [generateReport,56] - FileController/generateReport, 生成报告中
+2021-10-13 15:59:10.040 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:59:10.040 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [calAvgHeart,191] - ReportRunable/calAvgHeart, 读取文件成功
+2021-10-13 15:59:10.045 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,78] - ReportRunable/run, 插入fileReport成功
+2021-10-13 15:59:10.047 [,] [pool-1-thread-1] INFO  c.q.s.WxUserService - [getAllId,114] - WxUserService/getAllId, 查询所有用户id成功
+2021-10-13 15:59:10.052 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,120] - ReportRunable/run, 插入dayReport成功
+2021-10-13 15:59:10.058 [,] [pool-1-thread-1] INFO  c.q.a.ReportRunable - [run,163] - ReportRunable/run, 修改monthReport成功
+2021-10-13 16:22:54.757 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 13796 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 16:22:54.772 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 16:22:54.980 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 16:22:55.739 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 16:22:55.740 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 16:22:55.802 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 16:22:56.147 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Stopping service Tomcat
+2021-10-13 16:25:53.691 [,] [main] INFO  c.qian.HeartDataApp - [logStarting,48] - Starting HeartDataApp on DESKTOP-VCERGQB with PID 1388 (F:\HeartData\WorkSpace\HeartData\HeartDataServer\target\classes started by NJU in F:\HeartData\WorkSpace\HeartData\HeartDataServer)
+2021-10-13 16:25:53.693 [,] [main] INFO  c.qian.HeartDataApp - [logStartupProfileInfo,637] - No active profile set, falling back to default profiles: default
+2021-10-13 16:25:53.912 [,] [background-preinit] INFO  o.h.v.i.util.Version - [<clinit>,30] - HV000001: Hibernate Validator 5.3.4.Final
+2021-10-13 16:25:54.668 [,] [main] INFO  o.a.c.c.StandardService - [log,179] - Starting service Tomcat
+2021-10-13 16:25:54.669 [,] [main] INFO  o.a.c.c.StandardEngine - [log,179] - Starting Servlet Engine: Apache Tomcat/8.5.11
+2021-10-13 16:25:54.725 [,] [localhost-startStop-1] INFO  o.a.c.c.C.[.[.[/] - [log,179] - Initializing Spring embedded WebApplicationContext
+2021-10-13 16:25:55.612 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Initializing ProtocolHandler ["http-nio-8080"]
+2021-10-13 16:25:55.620 [,] [main] INFO  o.a.c.h.Http11NioProtocol - [log,179] - Starting ProtocolHandler [http-nio-8080]
+2021-10-13 16:25:55.687 [,] [main] INFO  o.a.t.u.n.NioSelectorPool - [log,179] - Using a shared selector for servlet write/read
+2021-10-13 16:25:55.699 [,] [main] INFO  c.qian.HeartDataApp - [logStarted,57] - Started HeartDataApp in 2.204 seconds (JVM running for 2.529)
