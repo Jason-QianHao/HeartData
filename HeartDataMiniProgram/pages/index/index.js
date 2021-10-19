@@ -24,8 +24,8 @@ Page({
     name: '',
     serviceId: '',
     services: [],
-    cd04: '',
-    characteristics04: null,
+    heartdataServiceUUID: '',
+    heartdataCharacteristicsUUID: "00002a37-0000-1000-8000-00805f9b34fb",
     result: null,
   },
 
@@ -252,80 +252,91 @@ Page({
             that.setData({
               services: res.services
             });
-            // 选定一个服务UUID
-            that.setData({
-              serviceId: that.data.services[0].uuid
-            });
-            console.log('选中的服务uuid', that.data.services[1].uuid);
+            /* 
+              选定一个服务UUID
+              20211019 需要对service uuid列表遍历，找到特定char uuid "00002a37-0000-1000-8000-00805f9b34fb"
+            */
+            // that.setData({
+            //   serviceId: that.data.services[0].uuid
+            // });
+            // console.log('选中的服务uuid', that.data.services[1].uuid);
             /**
              * 设定一个定时器。在定时到期以后执行注册的回调函数
              * 延迟3秒，根据服务获取特征 
              */
             setTimeout(
               function () {
-                /**
-                 * 10.获取蓝牙低功耗设备某个服务中所有特征 (characteristic)。
-                 */
-                wx.getBLEDeviceCharacteristics({
-                  deviceId: that.data.deviceId,
-                  serviceId: that.data.serviceId,
-                  success: function (res) {
-                    /** 
-                     * 获取设备特征列表
-                     * 属性	       类型	   说明
-                     * uuid	      string	蓝牙设备特征的 UUID
-                     * properties	Object	该特征支持的操作类型
-                     */
-                    console.log('获取当前服务uuid的特征uuid列表', res.characteristics);
-                    for (var i = 0; i < res.characteristics.length; i++) {
-                      if (res.characteristics[i].uuid.indexOf("cd04") != -1) {
-                        // 选取一个特征uuid
-                        // 并 开始指令 0a09..
-                        that.setData({
-                          cd04: res.characteristics[i].uuid,
-                          characteristics04: res.characteristics[i]
-                        });
-                      }
-                    }
-                    /**
-                     * 11. 启用蓝牙低功耗设备特征值变化时的 notify 功能，订阅特征。注意：必须设备的特征支持 notify 或者 indicate 才可以成功调用。
-                     * 顺序开发设备特征notifiy
-                     */
-                    wx.notifyBLECharacteristicValueChange({
-                      // 启用 notify 功能
-                      // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
-                      deviceId: that.data.deviceId,
-                      serviceId: that.data.serviceId,
-                      characteristicId: that.data.cd04,
-                      state: true,
-                      success: function (res) {
-                        console.log('启用蓝牙低功耗设备特征值变化时的 notify 功能', res)
-                      }
-                    });
-                    /**
-                     * 12. 监听蓝牙低功耗设备的特征值变化事件。必须先调用 wx.notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
-                     * 回调获取 设备发过来的数据
-                     */
-                    wx.onBLECharacteristicValueChange(function (characteristic) {
-                      console.log('监听蓝牙低功耗设备的特征值变化事件', characteristic)
-                      /**
-                       * 监听cd04中的结果
+                // 20211019 添加循环，遍历service uuid列表
+                for (var i = 0; i < res.services.length; i++) {
+                  /**
+                   * 10.获取蓝牙低功耗设备某个服务中所有特征 (characteristic)。
+                   */
+                  wx.getBLEDeviceCharacteristics({
+                    deviceId: that.data.deviceId,
+                    // serviceId: that.data.serviceId,
+                    // 20211019 替换为遍历过程中的serviceId
+                    serviceId: res.services[i].uuid,
+                    success: function (res) {
+                      /** 
+                       * 获取设备特征列表
+                       * 属性	       类型	   说明
+                       * uuid	      string	蓝牙设备特征的 UUID
+                       * properties	Object	该特征支持的操作类型
                        */
-                      if (characteristic.characteristicId.indexOf("cd04") != -1) {
-                        //  读取返回的数据
-                        const result = characteristic.value;
-                        // console.log(result);
-                        const hex = that.buf2hex(result);
-                        console.log(hex);
-                        that.setData({
-                          result: hex
-                        });
+                      console.log('获取当前服务uuid的特征uuid列表', res.characteristics);
+                      for (var j = 0; j < res.characteristics.length; j++) {
+                        if (res.characteristics[j].uuid == that.data.heartdataCharacteristicsUUID) {
+                          that.setData({
+                            heartdataServiceUUID: res.services[i].uuid,
+                          });
+                          console.log("获取到heartdataCharacteristicsuuid", res.characteristics[j].uuid);
+                          console.log("对应的heartdataServiceuuid", that.data.heartdataServiceUUID);
+                          // 写入开机指令
+                          enableBLEData("1919");
+                          break;
+                        }
                       }
-                    });
-                  }
-                });
+                      /**
+                       * 11. 启用蓝牙低功耗设备特征值变化时的 notify 功能，订阅特征。注意：必须设备的特征支持 notify 或者 indicate 才可以成功调用。
+                       * 顺序开发设备特征notifiy
+                       */
+                      wx.notifyBLECharacteristicValueChange({
+                        // 启用 notify 功能
+                        // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
+                        deviceId: that.data.deviceId,
+                        serviceId: that.data.heartdataServiceUUID,
+                        characteristicId: that.data.heartdataCharacteristicsUUID,
+                        state: true,
+                        success: function (res) {
+                          console.log('启用蓝牙低功耗设备特征值变化时的 notify 功能', res)
+                        }
+                      });
+                      /**
+                       * 12. 监听蓝牙低功耗设备的特征值变化事件。必须先调用 wx.notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
+                       * 回调获取 设备发过来的数据
+                       */
+                      wx.onBLECharacteristicValueChange(function (characteristic) {
+                        console.log('监听蓝牙低功耗设备的特征值变化事件', characteristic)
+                        /**
+                         * 监听heartdataCharacteristicsUUID中的结果
+                         */
+                        if (characteristic.characteristicId == that.data.heartdataCharacteristicsUUID) {
+                          //  读取返回的数据
+                          const result = characteristic.value;
+                          // console.log(result);
+                          const hex = that.buf2hex(result);
+                          console.log(hex);
+                          that.setData({
+                            result: hex
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
               },
-              1500);
+              1500
+            );
           }
         })
       },
@@ -346,28 +357,31 @@ Page({
   /**
    * 发送 数据到设备中
    */
-  // bindViewTap: function () {
-  //   var that = this;
-  //   var hex = 'AA5504B10000B5'
-  //   var typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
-  //     return parseInt(h, 16)
-  //   }))
-  //   console.log(typedArray)
-  //   var buffer1 = typedArray.buffer
-  //   console.log(buffer1)
-  //   /**
-  //    * 向蓝牙低功耗设备特征值中写入二进制数据。
-  //    */
-  //   wx.writeBLECharacteristicValue({
-  //     deviceId: that.data.deviceId,
-  //     serviceId: that.data.serviceId,
-  //     characteristicId: that.data.cd04,
-  //     value: buffer1,
-  //     success: function (res) {
-  //       console.log("success  指令发送成功");
-  //     }
-  //   });
-  // },
+  enableBLEData: function (data) {
+    var that = this;
+    var hex = data
+    var typedArray = new Uint8Array(hex.match(/[\da-f]{2}/gi).map(function (h) {
+      return parseInt(h, 16)
+    }))
+    console.log("转换为Uint8Array", typedArray);
+    var buffer1 = typedArray.buffer
+    console.log("对应的buffer值，typedArray.buffer",buffer1)
+    /**
+     * 向蓝牙低功耗设备特征值中写入二进制数据。
+     */
+    wx.writeBLECharacteristicValue({
+      deviceId: that.data.deviceId,
+      serviceId: that.data.heartdataServiceUUID,
+      characteristicId: that.data.heartdataCharacteristicsUUID,
+      value: buffer1,
+      success: function (res) {
+        console.log("success  指令发送成功");
+      },
+      fail: function (res) {
+        console.log("success  指令发送失败", res.errMsg);
+      }
+    });
+  },
 
   /**
    * 数据转hex
@@ -446,7 +460,7 @@ Page({
    */
   onShow: function (res) {
     console.log("app.globalData.selectedBleId: ", app.globalData.selectedBleId);
-    if(app.globalData.selectedBleId != ""){
+    if (app.globalData.selectedBleId != "") {
       this.connectBle();
     }
     // /**
