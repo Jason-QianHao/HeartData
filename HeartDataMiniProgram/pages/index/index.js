@@ -34,6 +34,7 @@ Page({
     var that = this;
     var arr1 = new Array(250);
     var arr2 = new Array(250);
+    // var arr3 = new Array(250);
     for (var i = 0; i < 250; i++) {
       arr1[i] = i + 1;
     }
@@ -45,7 +46,7 @@ Page({
       x_data: arr1,
       heartdata: arr2
     });
-    // this.OnWxChart([], [], '心电信号');
+    this.OnWxChart([], [], '心电信号');
     // console.log(this.data.userInfo);
     /**
      * 1.初始化蓝牙模块
@@ -153,7 +154,7 @@ Page({
     // 监听蓝牙和数据传输
     this.ble();
     // // 绘图
-    // this.OnWxChart(this.data.x_data,this.data.heartdata,'心电信号');
+    this.OnWxChart(this.data.x_data,this.data.heartdata,'心电信号');
   },
 
   ble: function () {
@@ -326,7 +327,38 @@ Page({
                               const result = characteristic.value;
                               // console.log(result);
                               const hex = that.buf2hex(result);
-                              console.log(hex);
+                              // 20211029
+                              // 解析 1100000000000xcvxcvxc01 1100
+                              // const var leftBuf = "";
+                              // for(int i = 0; i +15 < hex.length; i = i + 16){
+                                 // var str = hex.substring(i, i + 15); 
+                                // 1. 验证包头包尾
+                                // 缓冲区和当前字符串进行拼接 
+                                // str = lefrBuf + str;
+                                /*
+                                  if(! (str[0] == 1 && str[1] == 1 && ..)){
+                                    // 丢弃策略。。。 a.直接抛弃 b.取前一个数据/全0/1
+                                  }
+                                */
+                                // 2. 分割数据包 11 xx xx xx xx xx xx 01 8个字节
+                                  // 分割..js
+                                  // 处理完后 ---》var arr[2];
+                                      // for(var i = 0; i < 250 - 1; i++){
+                                      //   arr2[i] = arr2[i + 1];
+                                      // }
+                                     // arr2[249] = arr[0];
+                                     // for(var i = 0; i < 250 - 1; i++){
+                                      //   arr3[i] = arr3[i + 1];
+                                      // }
+                                     // arr3[249] = arr[0];
+                                // 3. 数据处理
+                                // 滤波
+                                // OnWxChart（);
+                                // arr2[249] - arr3[249] ---》 data ->上传服务器
+                                
+                              // }
+                              // leftBuf = hex.leftString. 1100
+                              // console.log(hex);
                               that.setData({
                                 result: hex
                               });
