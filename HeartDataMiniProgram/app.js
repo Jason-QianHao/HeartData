@@ -20,7 +20,9 @@ App({
     filepath: "",
     // domain: "114.212.133.214:8080"
     // domain: "114.212.129.144:8080"
-    domain: "http://3a40r96515.zicp.vip",
+    // domain: "http://3a40r96515.zicp.vip",
+    // domain: "http://454585x8l0.qicp.vip",
+    domain: "http://172.28.189.178",
     bleLists: null,
     selectedBleId: ""
   }
